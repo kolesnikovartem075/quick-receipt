@@ -36,5 +36,5 @@ public interface NovaPostClient {
     ResponseBase<ContactPersonAddress> saveAddressContactPerson(@RequestBody RequestBase<SaveAddressContactPersonRequest> request);
 
     @GetExchange
-    ResponseBase<CounterpartyContact> saveInternetDocument(@RequestBody RequestBase<SaveInternetDocumentRequest> request);
+    ResponseBase<InternetDocument> saveInternetDocument(@RequestBody RequestBase<SaveInternetDocumentRequest> request);
 }
