@@ -11,3 +11,5 @@ spring:
           default-label: main
           clone-on-start: true
           force-pull: true
+server:
+  port: 8071

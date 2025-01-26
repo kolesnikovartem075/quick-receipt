@@ -13,7 +13,7 @@ public class NovaPostService {
 
     private final NovaPostClient novaPostClient;
 
-    @Value("${nova.post.apiKey}")
+    @Value("${api.key}")
     private final String apiKey;
 
 
