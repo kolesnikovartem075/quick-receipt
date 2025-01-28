@@ -30,8 +30,6 @@ public class HttpClientConfiguration {
     }
 
     private WebClient getWebClient() {
-
-
         return WebClient.builder()
                 .filter(logRequest())
                 .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024))

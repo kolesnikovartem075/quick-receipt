@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: "novapost"
+  profiles:
+    active: "default"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} - [%level] [%logger{20}] - %msg%n"
