@@ -1,16 +1,18 @@
 import asyncio
 import logging
+import os
 
 from aiogram import Bot, Dispatcher
+from dotenv import load_dotenv
 
 from app.handlers import router
-from config import TOKEN
-
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
 
 
 async def main():
+    load_dotenv()
+    bot = Bot(token=os.getenv('BOT_TOKEN'))
+    dp = Dispatcher()
+
     dp.include_router(router)
     await dp.start_polling(bot)
 
