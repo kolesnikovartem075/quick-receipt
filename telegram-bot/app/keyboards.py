@@ -1,6 +1,10 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+register = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="Зареєструватись", callback_data="register")]
+])
+
 main = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Catalog', callback_data='catalog')],
     [InlineKeyboardButton(text='Basket', callback_data='basket'),
