@@ -5,6 +5,11 @@ register = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="Зареєструватись", callback_data="register")]
 ])
 
+confirm_nova_post_registration = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="✅ Підтвердити", callback_data="confirm_nova_post"),
+     InlineKeyboardButton(text="🔄 Ввести знову", callback_data="retry_nova_post")]
+])
+
 main = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Catalog', callback_data='catalog')],
     [InlineKeyboardButton(text='Basket', callback_data='basket'),
