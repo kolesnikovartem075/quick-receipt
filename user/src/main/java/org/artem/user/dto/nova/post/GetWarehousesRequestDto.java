@@ -1,10 +1,10 @@
-package org.quick.receipt.novapost.entity.request;
+package org.artem.user.dto.nova.post;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class GetWarehousesRequest {
+public class GetWarehousesRequestDto {
 
     @JsonProperty("Ref")
     private String ref;

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/novapost")
+@RequestMapping("/api/nova-post")
 @RequiredArgsConstructor
 public class NovaPostController {
 
@@ -18,47 +20,49 @@ public class NovaPostController {
     private final NovaPostService novaPostService;
 
     @PostMapping("/cities")
-    public ResponseBase<City> getCities(@RequestBody FindByStringRequest request) {
+    public List<City> getCities(@RequestBody FindByStringRequest request) {
         return novaPostService.getCities(request);
     }
 
     @PostMapping("/counterparties")
-    public ResponseBase<CounterpartySender> getCounterparties(@RequestBody GetCounterpartiesRequest request) {
+    public List<CounterpartySender> getCounterparties(@RequestBody GetCounterpartiesRequest request) {
         return novaPostService.getCounterparties(request);
     }
 
     @PostMapping("/cargo-descriptions")
-    public ResponseBase<CargoDescription> getCargoDescriptions(@RequestBody FindByStringRequest request) {
+    public List<CargoDescription> getCargoDescriptions(@RequestBody FindByStringRequest request) {
         return novaPostService.getCargoDescriptions(request);
     }
 
     @PostMapping("/settlements")
-    public ResponseBase<SettlementResponse> searchSettlements(@RequestBody SearchSettlementsRequest request) {
+    public List<SettlementResponse> searchSettlements(@RequestBody SearchSettlementsRequest request) {
         return novaPostService.searchSettlements(request);
     }
 
     @PostMapping("/warehouses")
-    public ResponseBase<Warehouse> getWarehouses(@RequestBody GetWarehousesRequest request) {
-        return novaPostService.getWarehouses(request);
+    public List<Warehouse> getWarehouses(@RequestBody GetWarehousesRequest request) {
+        var warehouses = novaPostService.getWarehouses(request);
+        System.out.println(warehouses);
+        return warehouses;
     }
 
     @PostMapping("/counterparty-contact-persons")
-    public ResponseBase<CounterpartyContact> getCounterpartyContactPersons(@RequestBody GetCounterpartyContactPersonsRequest request) {
+    public List<CounterpartyContact> getCounterpartyContactPersons(@RequestBody GetCounterpartyContactPersonsRequest request) {
         return novaPostService.getCounterpartyContactPersons(request);
     }
 
     @PostMapping("/save-counterparty-contact-person")
-    public ResponseBase<CounterpartyContact> saveCounterpartyContactPerson(@RequestBody SaveCounterpartyRequest request) {
+    public List<CounterpartyContact> saveCounterpartyContactPerson(@RequestBody SaveCounterpartyRequest request) {
         return novaPostService.saveCounterpartyContactPerson(request);
     }
 
     @PostMapping("/save-address-contact-person")
-    public ResponseBase<ContactPersonAddress> saveAddressContactPerson(@RequestBody SaveAddressContactPersonRequest request) {
+    public List<ContactPersonAddress> saveAddressContactPerson(@RequestBody SaveAddressContactPersonRequest request) {
         return novaPostService.saveAddressContactPerson(request);
     }
 
     @PostMapping("/save-internet-document")
-    public ResponseBase<InternetDocument> saveInternetDocument(@RequestBody SaveInternetDocumentRequest request) {
+    public List<InternetDocument> saveInternetDocument(@RequestBody SaveInternetDocumentRequest request) {
         return novaPostService.saveInternetDocument(request);
     }
 }

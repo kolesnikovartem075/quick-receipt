@@ -1,0 +1,15 @@
+services:
+  users-database:
+    container_name: users-database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: user
+    ports:
+      - "5432:5432"
+    extends:
+      file: compose-common-config.yml
+      service: microservice-database-config
+
+networks:
+  artem:
+    driver: "bridge"
