@@ -1,4 +1,4 @@
-package org.artem.user.database.entity;
+package org.artem.order.database.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,22 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User implements BaseEntity<Long> {
+@Table(name = "orders")
+public class Order implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long telegramId;
-
     private Long serviceId;
+    private Long userId;
 
-    private String firstName;
+    private String description;
 
-    private String lastName;
-
-    private String phoneNumber;
-
-    private String postOfficeRef;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 }

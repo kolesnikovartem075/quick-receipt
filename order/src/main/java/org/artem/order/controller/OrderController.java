@@ -1,10 +1,10 @@
-package org.artem.user.controller;
+package org.artem.order.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.user.dto.UserCreateEditDto;
-import org.artem.user.dto.UserFilter;
-import org.artem.user.dto.UserReadDto;
-import org.artem.user.service.UserService;
+import org.artem.order.dto.OrderCreateEditDto;
+import org.artem.order.dto.OrderFilter;
+import org.artem.order.dto.OrderReadDto;
+import org.artem.order.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,40 +17,40 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
-public class UserController {
+public class OrderController {
 
 
-    private final UserService userService;
+    private final OrderService orderService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<UserReadDto> findAll(UserFilter userFilter, Pageable pageable) {
-        return userService.findAll(userFilter, pageable);
+    public Page<OrderReadDto> findAll(OrderFilter orderFilter, Pageable pageable) {
+        return orderService.findAll(orderFilter, pageable);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserReadDto findById(@PathVariable Long id) {
-        return userService.findById(id)
+    public OrderReadDto findById(@PathVariable Long id) {
+        return orderService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDto create(@RequestBody UserCreateEditDto user) {
-        return userService.create(user);
+    public OrderReadDto create(@RequestBody OrderCreateEditDto order) {
+        return orderService.create(order);
     }
 
     @PutMapping("/{id}")
-    public UserReadDto update(@PathVariable Long id,
-                              @RequestBody UserCreateEditDto user) {
-        return userService.update(id, user)
+    public OrderReadDto update(@PathVariable Long id,
+                              @RequestBody OrderCreateEditDto order) {
+        return orderService.update(id, order)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return userService.delete(id)
+        return orderService.delete(id)
                 ? noContent().build()
                 : notFound().build();
     }

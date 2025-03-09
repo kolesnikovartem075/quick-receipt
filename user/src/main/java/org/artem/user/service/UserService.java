@@ -3,9 +3,13 @@ package org.artem.user.service;
 import lombok.RequiredArgsConstructor;
 import org.artem.user.database.repository.UserRepository;
 import org.artem.user.dto.UserCreateEditDto;
+import org.artem.user.dto.UserFilter;
 import org.artem.user.dto.UserReadDto;
 import org.artem.user.mapper.UserCreateEditMapper;
 import org.artem.user.mapper.UserReadMapper;
+import org.artem.user.database.specification.UserSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,12 @@ public class UserService {
 
     public Optional<UserReadDto> findById(Long id) {
         return userRepository.findById(id)
+                .map(userReadMapper::map);
+    }
+
+    public Page<UserReadDto> findAll(UserFilter userFilter, Pageable pageable) {
+        var specification = new UserSpecification(userFilter);
+        return userRepository.findAll(specification, pageable)
                 .map(userReadMapper::map);
     }
 

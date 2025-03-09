@@ -5,17 +5,33 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-from app.keyboards import confirm_nova_post_registration
+from app.client.APIClient import create_user
+from app.user_confirmation import confirm_nova_post_registration
 
 register_router = Router()
 
 
 class Register(StatesGroup):
+    telegram_id = State()
     first_name = State()
     last_name = State()
     number = State()
+    city = State()
     nova_post_address = State()
     message_id = State()
+
+
+@register_router.callback_query(F.data == 'register')
+async def register(callback: CallbackQuery, state: FSMContext):
+    user_id = callback.from_user.id
+
+    await state.update_data(telegram_id=user_id)
+
+    await state.set_state(Register.first_name)
+    await callback.answer("Давайте зареєструємо вас!")
+
+    await update_registration_message(callback.message, state)
+    await callback.message.answer('Введіть ваше імʼя:')
 
 
 async def update_registration_message(message: Message, state: FSMContext):
@@ -38,15 +54,6 @@ async def update_registration_message(message: Message, state: FSMContext):
         await state.update_data(message_id=new_message.message_id)
 
 
-@register_router.callback_query(F.data == 'register')
-async def register(callback: CallbackQuery, state: FSMContext):
-    await state.set_state(Register.first_name)
-    await callback.answer("Давайте зареєструємо вас!")
-
-    await update_registration_message(callback.message, state)
-    await callback.message.answer('Введіть ваше імʼя:')
-
-
 @register_router.message(Register.first_name)
 async def first_name(message: Message, state: FSMContext):
     await state.update_data(first_name=message.text)
@@ -59,9 +66,17 @@ async def first_name(message: Message, state: FSMContext):
 @register_router.message(Register.last_name)
 async def last_name(message: Message, state: FSMContext):
     await state.update_data(last_name=message.text)
-    await state.set_state(Register.nova_post_address)
+    await state.set_state(Register.city)
 
     await update_registration_message(message, state)
+    await message.answer('Введіть місто:')
+
+
+@register_router.message(Register.city)
+async def city(message: Message, state: FSMContext):
+    await state.update_data(city=message.text)
+    await state.set_state(Register.nova_post_address)
+
     await message.answer('Введіть № відділення нової пошти:')
 
 
@@ -94,14 +109,30 @@ async def register_finish(message: Message, state: FSMContext):
     await state.update_data(number=message.text)
     data = await state.get_data()
 
-    await message.answer(
-        f"✅ *Реєстрація завершена!*\n\n"
-        f"👤 Імʼя: {data['first_name']}\n"
-        f"👤 Призвище: {data['last_name']}\n"
-        f"🏢 Відділення Нової Пошти: {data['nova_post_address']}\n"
-        f"📞 Номер телефону: {data['number']}\n"
-        "Дякуємо за реєстрацію!",
-        parse_mode="Markdown"
-    )
+    user_payload = {
+        "telegramId": data["telegram_id"],
+        "firstName": data["first_name"],
+        "lastName": data["last_name"],
+        "phoneNumber": data["number"],
+        "city": data["city"],
+        "postOffice": {
+            "findByString": data["nova_post_address"]
+        }
+    }
+
+    response = await create_user(user_payload)
+
+    if response.status_code == 201:
+        await message.answer(
+            f"✅ *Реєстрація завершена!*\n\n"
+            f"👤 Імʼя: {data['first_name']}\n"
+            f"👤 Призвище: {data['last_name']}\n"
+            f"🏢 Відділення Нової Пошти: {data['nova_post_address']}\n"
+            f"📞 Номер телефону: {data['number']}\n"
+            "Дякуємо за реєстрацію!",
+            parse_mode="Markdown"
+        )
+    else:
+        await message.answer("❌ Виникла помилка при створенні користувача. Спробуйте ще раз.")
 
     await state.clear()

@@ -10,6 +10,11 @@ confirm_nova_post_registration = InlineKeyboardMarkup(inline_keyboard=[
      InlineKeyboardButton(text="🔄 Ввести знову", callback_data="retry_nova_post")]
 ])
 
+order_confirmation = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="✏️ Редагувати", callback_data="edit_user"),
+     InlineKeyboardButton(text="📦 Оформити доставку", callback_data="confirm_order")]
+])
+
 main = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Catalog', callback_data='catalog')],
     [InlineKeyboardButton(text='Basket', callback_data='basket'),

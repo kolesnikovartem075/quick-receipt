@@ -4,7 +4,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-import app.keyboards as kb
+import app.user_confirmation as kb
+from app.client.APIClient import get_user_by_telegram_id
+from app.dto.user import UserReadDto
+from app.handler.order import show_user_details
 from app.middlewares import TestMiddleware
 
 router = Router()
@@ -18,11 +21,15 @@ class Register(StatesGroup):
 
 
 @router.message(CommandStart())
-async def start(message: Message):
+async def start(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+    user: UserReadDto = await get_user_by_telegram_id(str(user_id))
+    if user:
+        await show_user_details(message, user, state)
+        return
     await message.reply(f'Привіт {message.from_user.first_name},\n'
                         f'Для оформлення доставки треба натиснути кнопку нижче!',
                         reply_markup=kb.register)
-
 
 
 @router.message(F.text == 'Как дела?')

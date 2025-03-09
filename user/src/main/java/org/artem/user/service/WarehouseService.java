@@ -2,8 +2,10 @@ package org.artem.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.user.client.NovaPostClient;
+import org.artem.user.dto.PostOfficeDto;
 import org.artem.user.dto.nova.post.GetWarehousesRequestDto;
 import org.artem.user.dto.nova.post.PostOfficeReadDto;
+import org.artem.user.mapper.WarehouseCreateEditMapper;
 import org.artem.user.mapper.WarehouseReadMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class WarehouseService {
 
     private final NovaPostClient novaPostClient;
     private final WarehouseReadMapper warehouseReadMapper;
+    private final WarehouseCreateEditMapper warehouseCreateEditMapper;
 
     public Optional<PostOfficeReadDto> findByRef(String warehouseRef) {
         GetWarehousesRequestDto request = new GetWarehousesRequestDto();
@@ -27,14 +30,14 @@ public class WarehouseService {
                 .findFirst();
     }
 
-    public Optional<PostOfficeReadDto> findBy(String queryString, String cityRef) {
-        GetWarehousesRequestDto request = new GetWarehousesRequestDto();
-        request.setCategoryOfWarehouse("Warehouse");
-        request.setFindByString(queryString);
-        request.setCityRef(cityRef);
-
-        return novaPostClient.getWarehouses(request).stream()
+    public Optional<PostOfficeReadDto> find(PostOfficeDto request) {
+        var map = getGetWarehousesRequestDto(request);
+        return novaPostClient.getWarehouses(map).stream()
                 .map(warehouseReadMapper::map)
                 .findFirst();
+    }
+
+    private GetWarehousesRequestDto getGetWarehousesRequestDto(PostOfficeDto request) {
+        return warehouseCreateEditMapper.map(request);
     }
 }
