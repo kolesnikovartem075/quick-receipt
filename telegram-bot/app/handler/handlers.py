@@ -23,7 +23,7 @@ class Register(StatesGroup):
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    user: UserReadDto = await get_user_by_telegram_id(str(user_id))
+    user: UserReadDto = await get_user_by_telegram_id(user_id)
     if user:
         await show_user_details(message, user, state)
         return

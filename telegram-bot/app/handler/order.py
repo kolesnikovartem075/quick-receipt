@@ -4,7 +4,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.dto.user import UserReadDto
-from app.user_confirmation import order_confirmation
+from app.keyboard.keyboard import order_confirmation
 
 order_router = Router()
 

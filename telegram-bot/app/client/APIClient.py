@@ -1,14 +1,13 @@
-from typing import Union, Any, Optional, Coroutine
-
 import httpx
+from typing import Optional
 
 from app.dto.user import UserReadDto
 from app.mapper.user_mapper import map_user
 
-BASE_URL = "http://localhost:8081/api/v1"
+USER_BASE_URL = "http://localhost:8081/api/v1"
 
 
-async def get_user_by_telegram_id(telegram_id: str) -> Optional[UserReadDto]:
+async def get_user_by_telegram_id(telegram_id: int) -> Optional[UserReadDto]:
     response = await fetch_user_data(telegram_id)
 
     if response.status_code == 200:
@@ -20,10 +19,10 @@ async def get_user_by_telegram_id(telegram_id: str) -> Optional[UserReadDto]:
     return None
 
 
-async def fetch_user_data(telegram_id: str):
+async def fetch_user_data(telegram_id: int):
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{BASE_URL}/users",
+            f"{USER_BASE_URL}/user-profiles",
             params={"telegramId": telegram_id, "page": 0, "size": 1}
         )
         return response
@@ -31,5 +30,5 @@ async def fetch_user_data(telegram_id: str):
 
 async def create_user(user_data: dict):
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{BASE_URL}/users", json=user_data)
+        response = await client.post(f"{USER_BASE_URL}/user-profiles", json=user_data)
         return response

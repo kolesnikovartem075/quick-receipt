@@ -20,7 +20,7 @@ public class UserSpecification implements Specification<User> {
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         var predicates = SPredicates.builder()
-                .add(criteria.telegramId(), telegramId -> builder.equal(root.get("telegramId"), telegramId))
+                .add(criteria.externalUserId(), telegramId -> builder.equal(root.get("externalUserId"), telegramId))
                 .add(criteria.firstName(), firstName -> builder.like(root.get("firstName"), firstName))
                 .add(criteria.lastName(), lastName -> builder.like(root.get("lastName"), lastName))
                 .add(criteria.phoneNumber(), phoneNumber -> builder.equal(root.get("phoneNumber"), phoneNumber))

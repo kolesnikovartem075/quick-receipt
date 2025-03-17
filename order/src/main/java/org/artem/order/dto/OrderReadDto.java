@@ -6,7 +6,7 @@ import lombok.Value;
 public class OrderReadDto {
 
     Long id;
-    Long serviceId;
+    Long accountId;
     Long userId;
     String description;
     String status;

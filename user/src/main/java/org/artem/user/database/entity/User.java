@@ -18,15 +18,5 @@ public class User implements BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long telegramId;
-
-    private Long serviceId;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String phoneNumber;
-
-    private String postOfficeRef;
+    private Long externalUserId;
 }

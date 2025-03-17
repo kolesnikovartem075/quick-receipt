@@ -7,7 +7,7 @@ def map_user(user_data: dict) -> UserReadDto:
     return UserReadDto(
         id=user_data.get('id'),
         first_name=user_data.get('firstName'),
-        last_name=user_data.get('las    tName'),
+        last_name=user_data.get('lastName'),
         phone_number=user_data.get('phoneNumber'),
         post_office=post_office
     )

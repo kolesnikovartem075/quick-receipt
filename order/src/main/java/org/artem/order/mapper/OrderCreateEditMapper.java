@@ -27,7 +27,7 @@ public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> 
 
     private void copy(OrderCreateEditDto object, Order order) {
         order.setDescription(object.getDescription());
-        order.setServiceId(object.getServiceId());
+        order.setAccountId(object.getAccountId());
         order.setUserId(object.getUserId());
         order.setStatus(OrderStatus.valueOf(object.getStatus()));
     }

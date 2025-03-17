@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class OrderCreateEditDto {
 
-    Long serviceId;
+    Long accountId;
     Long userId;
     String description;
     String status;

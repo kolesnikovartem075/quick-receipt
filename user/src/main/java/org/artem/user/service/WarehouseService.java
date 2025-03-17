@@ -2,7 +2,7 @@ package org.artem.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.user.client.NovaPostClient;
-import org.artem.user.dto.PostOfficeDto;
+import org.artem.user.dto.nova.post.PostOfficeDto;
 import org.artem.user.dto.nova.post.GetWarehousesRequestDto;
 import org.artem.user.dto.nova.post.PostOfficeReadDto;
 import org.artem.user.mapper.WarehouseCreateEditMapper;

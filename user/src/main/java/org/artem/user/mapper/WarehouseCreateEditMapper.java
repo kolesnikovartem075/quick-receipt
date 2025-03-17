@@ -1,7 +1,7 @@
 package org.artem.user.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.user.dto.PostOfficeDto;
+import org.artem.user.dto.nova.post.PostOfficeDto;
 import org.artem.user.dto.nova.post.GetWarehousesRequestDto;
 import org.springframework.stereotype.Component;
 

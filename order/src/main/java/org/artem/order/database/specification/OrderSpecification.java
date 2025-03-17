@@ -20,7 +20,7 @@ public class OrderSpecification implements Specification<Order> {
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         var predicates = SPredicates.builder()
-                .add(criteria.serviceId(), id -> builder.equal(root.get("serviceId"), id))
+                .add(criteria.accountId(), id -> builder.equal(root.get("accountId"), id))
                 .add(criteria.userId(), id -> builder.equal(root.get("userId"), id))
                 .add(criteria.status(), status -> builder.equal(root.get("status"), status))
                 .add(criteria.dateCreated(), date -> builder.greaterThanOrEqualTo(root.get("dateCreated"), date))

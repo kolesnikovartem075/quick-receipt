@@ -1,6 +1,5 @@
-package org.artem.user.dto;
+package org.artem.user.dto.nova.post;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data

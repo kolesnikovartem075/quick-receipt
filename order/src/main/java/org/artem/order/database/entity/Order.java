@@ -18,7 +18,7 @@ public class Order implements BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long serviceId;
+    private Long accountId;
     private Long userId;
 
     private String description;

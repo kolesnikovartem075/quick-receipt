@@ -1,12 +1,11 @@
 import re
-
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_user
-from app.user_confirmation import confirm_nova_post_registration
+from app.keyboard.keyboard import confirm_nova_post_registration
 
 register_router = Router()
 
@@ -117,7 +116,7 @@ async def register_finish(message: Message, state: FSMContext):
         "city": data["city"],
         "postOffice": {
             "findByString": data["nova_post_address"]
-        }
+        },
     }
 
     response = await create_user(user_payload)
