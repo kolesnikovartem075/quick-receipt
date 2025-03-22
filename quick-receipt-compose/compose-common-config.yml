@@ -11,6 +11,7 @@ services:
       timeout: 10s
       retries: 5
     environment:
+      POSTGRES_USER: ${POSTGRES_USER}
       MYSQL_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
     env_file:
       - ../.env

@@ -13,6 +13,11 @@ public class OrderReadMapper implements Mapper<Order, OrderReadDto> {
     @Override
     public OrderReadDto map(Order object) {
 
-        return new OrderReadDto();
+        return OrderReadDto.builder()
+                .id(object.getId())
+                .userId(object.getUserId())
+                .description(object.getDescription())
+                .status(object.getStatus().name())
+                .build();
     }
 }

@@ -22,9 +22,9 @@ public class Account implements BaseEntity<Long> {
     private String name;
     private String nickname;
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Admin> admin;
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<AccountSender> accountSender;
 }
