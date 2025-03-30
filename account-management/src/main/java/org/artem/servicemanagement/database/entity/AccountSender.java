@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "account_sender")
+@Table
 public class AccountSender implements BaseEntity<Long> {
 
     @Id

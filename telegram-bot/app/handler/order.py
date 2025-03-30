@@ -3,6 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
+from app.client.APIClient import create_order
 from app.dto.user import UserReadDto
 from app.keyboard.keyboard import order_confirmation
 
@@ -10,7 +11,9 @@ order_router = Router()
 
 
 class Order(StatesGroup):
-    waiting_for_description = State()
+    user_id = State()
+    account_id = State()
+    description = State()
 
 
 async def show_user_details(message: Message, user: UserReadDto, state: FSMContext):
@@ -24,10 +27,12 @@ async def show_user_details(message: Message, user: UserReadDto, state: FSMConte
         "Додайте опис (необов'язково) або підтвердьте замовлення:"
     )
     await message.answer(text, reply_markup=order_confirmation, parse_mode="Markdown")
-    await state.set_state(Order.waiting_for_description)
+    await state.update_data(user_id=user.user_id)
+    await state.update_data(account_id=user.account_id)
+    await state.set_state(Order.description)
 
 
-@order_router.message(Order.waiting_for_description)
+@order_router.message(Order.description)
 async def process_description(message: Message, state: FSMContext):
     await state.update_data(description=message.text)
     await message.answer("✅ Опис додано. Натисніть \"Підтвердити замовлення\".", reply_markup=order_confirmation)
@@ -38,10 +43,21 @@ async def confirm_order(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     description = data.get("description", "Без опису")
 
-    order_id = 12345
+    order_payload = {
+        "accountId": data["account_id"],
+        "description": description,
+        "user_id": data["user_id"]
+    }
 
+    response = await create_order(order_payload)
+    if not response.status_code == 201:
+        await callback.answer("❌ Помилка при створенні замовлення. Спробуйте ще раз.")
+        await state.clear()
+        return
+
+    order = response.json()
     text = (
-        f"🎉 Ваше замовлення створено!\n\n🆔 Номер замовлення: {order_id}\n📝 Опис: {description}\n\n"
+        f"🎉 Ваше замовлення створено!\n\n🆔 Номер замовлення: {order.id}\n📝 Опис: {order.description}\n\n"
         "Очікуйте підтвердження від адміністрації."
     )
 

@@ -10,12 +10,20 @@ class PostOfficeReadDto:
 
 
 class UserReadDto:
-    def __init__(self, id: int, first_name: str, last_name: str, phone_number: str, post_office: PostOfficeReadDto):
-        self.id = id
+    def __init__(self, user_id: int,
+                 account_id: int,
+                 external_user_id: str,
+                 first_name: str,
+                 last_name: str,
+                 phone_number: str,
+                 post_office: PostOfficeReadDto):
+        self.user_id = user_id
+        self.account_id = account_id
+        self.external_user_id = external_user_id
         self.first_name = first_name
         self.last_name = last_name
         self.phone_number = phone_number
         self.post_office = post_office
 
     def __repr__(self):
-        return f"UserReadDto(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, phone_number={self.phone_number}, post_office={self.post_office})"
+        return f"UserReadDto(user_id={self.user_id}, account_id={self.account_id}, external_user_id={self.external_user_id}, first_name={self.first_name}, last_name={self.last_name}, phone_number={self.phone_number}, post_office={self.post_office})"

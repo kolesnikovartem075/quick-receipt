@@ -12,7 +12,7 @@ import org.artem.servicemanagement.dto.AdminRole;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "admin")
+@Table
 public class Admin implements BaseEntity<Long> {
 
     @Id

@@ -1,10 +1,10 @@
-package org.artem.user.service;
+package org.artem.servicemanagement.service;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.user.client.NovaPostClient;
-import org.artem.user.dto.nova.post.CityReadDto;
-import org.artem.user.dto.nova.post.GetWarehousesRequestDto;
-import org.artem.user.mapper.CityReadMapper;
+import org.artem.servicemanagement.client.NovaPostClient;
+import org.artem.servicemanagement.dto.nova.post.CityReadDto;
+import org.artem.servicemanagement.dto.nova.post.GetWarehousesRequestDto;
+import org.artem.servicemanagement.mapper.CityReadMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,6 @@ public class CityService {
 
     private final NovaPostClient novaPostClient;
     private final CityReadMapper cityReadMapper;
-
 
     public String getCityRef(String city) {
         return findByQueryString(city).stream()

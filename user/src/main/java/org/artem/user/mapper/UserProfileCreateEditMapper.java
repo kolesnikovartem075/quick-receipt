@@ -42,10 +42,8 @@ public class UserProfileCreateEditMapper implements Mapper<UserProfileCreateEdit
 
     private void copy(UserProfileCreateEditDto object, UserProfile userProfile) {
         if (object.getPostOffice().getCityRef() == null) {
-            cityService.findByQueryString(object.getCity()).stream()
-                    .findFirst()
-                    .map(CityReadDto::getRef)
-                    .ifPresent(ref -> object.getPostOffice().setCityRef(ref));
+            var cityRef = cityService.getCityRef(object.getCity());
+            object.getPostOffice().setCityRef(cityRef);
         }
 
         var warehouse = getWarehouseRef(object);

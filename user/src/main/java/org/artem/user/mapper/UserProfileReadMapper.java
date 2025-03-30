@@ -16,10 +16,13 @@ public class UserProfileReadMapper implements Mapper<UserProfile, UserProfileRea
 
     @Override
     public UserProfileReadDto map(UserProfile object) {
+        var user = object.getUser();
         var warehouse = getWarehouse(object);
 
         return UserProfileReadDto.builder()
                 .id(object.getId())
+                .externalUserId(user.getExternalUserId())
+                .accountId(object.getAccountId())
                 .firstName(object.getFirstName())
                 .lastName(object.getLastName())
                 .phoneNumber(object.getPhoneNumber())

@@ -12,7 +12,7 @@ import java.util.List;
 @ToString(exclude = {"admin", "accountSender"})
 @EqualsAndHashCode(exclude = {"admin", "accountSender"})
 @Entity
-@Table(name = "account")
+@Table
 public class Account implements BaseEntity<Long> {
 
     @Id

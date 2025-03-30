@@ -9,6 +9,8 @@ import org.artem.user.dto.nova.post.PostOfficeReadDto;
 public class UserProfileReadDto {
 
     Long id;
+    Long externalUserId;
+    Long accountId;
     String firstName;
     String lastName;
     String phoneNumber;

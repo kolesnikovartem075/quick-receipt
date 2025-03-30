@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_profile")
+@Table
 public class UserProfile implements BaseEntity<Long> {
 
     @Id

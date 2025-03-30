@@ -1,4 +1,5 @@
 import httpx
+from httpx import Response
 from typing import Optional
 
 from app.dto.user import UserReadDto
@@ -31,4 +32,10 @@ async def fetch_user_data(telegram_id: int):
 async def create_user(user_data: dict):
     async with httpx.AsyncClient() as client:
         response = await client.post(f"{USER_BASE_URL}/user-profiles", json=user_data)
+        return response
+
+
+async def create_order(order_data: dict) -> Response:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{USER_BASE_URL}orders", json=order_data)
         return response

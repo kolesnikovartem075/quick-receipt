@@ -5,6 +5,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_user
+from app.config import username
 from app.keyboard.keyboard import confirm_nova_post_registration
 
 register_router = Router()
@@ -109,6 +110,7 @@ async def register_finish(message: Message, state: FSMContext):
     data = await state.get_data()
 
     user_payload = {
+        "botNickname": username,
         "telegramId": data["telegram_id"],
         "firstName": data["first_name"],
         "lastName": data["last_name"],
