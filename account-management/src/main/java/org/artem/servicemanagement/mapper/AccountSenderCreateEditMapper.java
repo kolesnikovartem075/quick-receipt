@@ -5,7 +5,7 @@ import org.artem.servicemanagement.database.entity.Account;
 import org.artem.servicemanagement.database.entity.AccountSender;
 import org.artem.servicemanagement.database.repository.AccountRepository;
 import org.artem.servicemanagement.dto.AccountSenderCreateEditDto;
-import org.artem.servicemanagement.dto.nova.post.PostOfficeReadDto;
+import org.artem.servicemanagement.dto.nova.post.WarehouseReadDto;
 import org.artem.servicemanagement.service.CityService;
 import org.artem.servicemanagement.service.WarehouseService;
 import org.springframework.stereotype.Component;
@@ -34,9 +34,9 @@ public class AccountSenderCreateEditMapper implements Mapper<AccountSenderCreate
     }
 
     private void copy(AccountSenderCreateEditDto object, AccountSender accountSender) {
-        if (object.getPostOffice().getCityRef() == null) {
+        if (object.getWarehouseRequestDto().getCityRef() == null) {
             var cityRef = cityService.getCityRef(object.getCity());
-            object.getPostOffice().setCityRef(cityRef);
+            object.getWarehouseRequestDto().setCityRef(cityRef);
         }
 
         var warehouse = getWarehouseRef(object);
@@ -53,8 +53,8 @@ public class AccountSenderCreateEditMapper implements Mapper<AccountSenderCreate
         return accountRepository.findById(object.getAccountId()).orElseThrow();
     }
 
-    private PostOfficeReadDto getWarehouseRef(AccountSenderCreateEditDto object) {
-        return warehouseService.find(object.getPostOffice())
+    private WarehouseReadDto getWarehouseRef(AccountSenderCreateEditDto object) {
+        return warehouseService.findBy(object.getWarehouseRequestDto())
                 .orElseThrow();
     }
 }

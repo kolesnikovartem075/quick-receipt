@@ -3,7 +3,8 @@ package org.artem.user.mapper;
 import lombok.RequiredArgsConstructor;
 import org.artem.user.database.entity.UserProfile;
 import org.artem.user.dto.UserProfileReadDto;
-import org.artem.user.dto.nova.post.PostOfficeReadDto;
+import org.artem.user.dto.nova.post.WarehouseReadDto;
+import org.artem.user.dto.nova.post.WarehouseRequestDto;
 import org.artem.user.service.WarehouseService;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,10 @@ public class UserProfileReadMapper implements Mapper<UserProfile, UserProfileRea
                 .build();
     }
 
-    private PostOfficeReadDto getWarehouse(UserProfile object) {
-        return warehouseService.findByRef(object.getPostOfficeRef()).orElseThrow();
+    private WarehouseReadDto getWarehouse(UserProfile object) {
+        var warehouseRequestDto = new WarehouseRequestDto();
+        warehouseRequestDto.setRef(object.getPostOfficeRef());
+
+        return warehouseService.findBy(warehouseRequestDto).orElseThrow();
     }
 }

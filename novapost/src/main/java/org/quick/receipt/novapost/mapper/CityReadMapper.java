@@ -1,7 +1,7 @@
-package org.artem.servicemanagement.mapper;
+package org.quick.receipt.novapost.mapper;
 
-import org.artem.servicemanagement.dto.nova.post.City;
-import org.artem.servicemanagement.dto.nova.post.CityReadDto;
+import org.quick.receipt.novapost.dto.CityReadDto;
+import org.quick.receipt.novapost.entity.response.City;
 import org.springframework.stereotype.Component;
 
 @Component

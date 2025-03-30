@@ -3,13 +3,10 @@ package org.artem.servicemanagement.dto.nova.post;
 import lombok.Data;
 
 @Data
-public class PostOfficeRequestDto {
+public class WarehouseRequestDto {
 
     private String ref;
-
     private String cityRef;
-
     private String categoryOfWarehouse;
-
     private String findByString;
 }

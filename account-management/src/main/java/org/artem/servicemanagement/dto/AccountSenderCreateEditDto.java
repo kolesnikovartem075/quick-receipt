@@ -1,7 +1,7 @@
 package org.artem.servicemanagement.dto;
 
 import lombok.Value;
-import org.artem.servicemanagement.dto.nova.post.PostOfficeRequestDto;
+import org.artem.servicemanagement.dto.nova.post.WarehouseRequestDto;
 
 @Value
 public class AccountSenderCreateEditDto {
@@ -11,5 +11,5 @@ public class AccountSenderCreateEditDto {
     String lastName;
     String phoneNumber;
     String city;
-    PostOfficeRequestDto postOffice;
+    WarehouseRequestDto warehouseRequestDto;
 }

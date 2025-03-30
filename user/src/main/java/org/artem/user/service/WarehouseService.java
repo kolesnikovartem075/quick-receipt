@@ -1,12 +1,9 @@
 package org.artem.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.user.client.NovaPostClient;
-import org.artem.user.dto.nova.post.PostOfficeDto;
-import org.artem.user.dto.nova.post.GetWarehousesRequestDto;
-import org.artem.user.dto.nova.post.PostOfficeReadDto;
-import org.artem.user.mapper.WarehouseCreateEditMapper;
-import org.artem.user.mapper.WarehouseReadMapper;
+import org.artem.user.client.WarehouseClient;
+import org.artem.user.dto.nova.post.WarehouseReadDto;
+import org.artem.user.dto.nova.post.WarehouseRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,28 +13,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final NovaPostClient novaPostClient;
-    private final WarehouseReadMapper warehouseReadMapper;
-    private final WarehouseCreateEditMapper warehouseCreateEditMapper;
+    private final WarehouseClient warehouseClient;
 
-    public Optional<PostOfficeReadDto> findByRef(String warehouseRef) {
-        GetWarehousesRequestDto request = new GetWarehousesRequestDto();
-        request.setRef(warehouseRef);
-        request.setCategoryOfWarehouse("Warehouse");
+    public Optional<WarehouseReadDto> findBy(WarehouseRequestDto request) {
+        if (request.getCategoryOfWarehouse() == null) {
+            request.setCategoryOfWarehouse("Warehouse");
+        }
 
-        return novaPostClient.getWarehouses(request).stream()
-                .map(warehouseReadMapper::map)
+        return warehouseClient.findAll(request).stream()
                 .findFirst();
-    }
-
-    public Optional<PostOfficeReadDto> find(PostOfficeDto request) {
-        var map = getGetWarehousesRequestDto(request);
-        return novaPostClient.getWarehouses(map).stream()
-                .map(warehouseReadMapper::map)
-                .findFirst();
-    }
-
-    private GetWarehousesRequestDto getGetWarehousesRequestDto(PostOfficeDto request) {
-        return warehouseCreateEditMapper.map(request);
     }
 }

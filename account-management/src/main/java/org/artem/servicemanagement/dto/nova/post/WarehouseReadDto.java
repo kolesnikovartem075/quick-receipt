@@ -1,9 +1,9 @@
-package org.artem.user.dto.nova.post;
+package org.artem.servicemanagement.dto.nova.post;
 
 import lombok.Value;
 
 @Value
-public class PostOfficeReadDto {
+public class WarehouseReadDto {
 
     String ref;
     String description;

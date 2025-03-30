@@ -7,8 +7,7 @@ import org.artem.user.database.repository.UserRepository;
 import org.artem.user.dto.UserCreateEditDto;
 import org.artem.user.dto.UserProfileCreateEditDto;
 import org.artem.user.dto.UserReadDto;
-import org.artem.user.dto.nova.post.CityReadDto;
-import org.artem.user.dto.nova.post.PostOfficeReadDto;
+import org.artem.user.dto.nova.post.WarehouseReadDto;
 import org.artem.user.service.CityService;
 import org.artem.user.service.UserService;
 import org.artem.user.service.WarehouseService;
@@ -69,8 +68,8 @@ public class UserProfileCreateEditMapper implements Mapper<UserProfileCreateEdit
                 .orElseThrow();
     }
 
-    private PostOfficeReadDto getWarehouseRef(UserProfileCreateEditDto object) {
-        return warehouseService.find(object.getPostOffice())
+    private WarehouseReadDto getWarehouseRef(UserProfileCreateEditDto object) {
+        return warehouseService.findBy(object.getPostOffice())
                 .orElseThrow();
     }
 }

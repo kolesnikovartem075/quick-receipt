@@ -1,8 +1,8 @@
-package org.artem.user.controller;
+package org.quick.receipt.novapost.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.user.dto.nova.post.CityReadDto;
-import org.artem.user.service.CityService;
+import org.quick.receipt.novapost.dto.CityReadDto;
+import org.quick.receipt.novapost.service.CityService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

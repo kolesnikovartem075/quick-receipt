@@ -2,7 +2,7 @@ package org.artem.user.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import org.artem.user.dto.nova.post.PostOfficeReadDto;
+import org.artem.user.dto.nova.post.WarehouseReadDto;
 
 @Value
 @Builder
@@ -14,5 +14,5 @@ public class UserProfileReadDto {
     String firstName;
     String lastName;
     String phoneNumber;
-    PostOfficeReadDto postOffice;
+    WarehouseReadDto postOffice;
 }

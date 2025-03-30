@@ -1,12 +1,9 @@
 package org.artem.servicemanagement.service;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.client.NovaPostClient;
-import org.artem.servicemanagement.dto.nova.post.GetWarehousesRequestDto;
-import org.artem.servicemanagement.dto.nova.post.PostOfficeRequestDto;
-import org.artem.servicemanagement.dto.nova.post.PostOfficeReadDto;
-import org.artem.servicemanagement.mapper.WarehouseCreateEditMapper;
-import org.artem.servicemanagement.mapper.WarehouseReadMapper;
+import org.artem.servicemanagement.client.WarehouseClient;
+import org.artem.servicemanagement.dto.nova.post.WarehouseReadDto;
+import org.artem.servicemanagement.dto.nova.post.WarehouseRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,28 +13,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final NovaPostClient novaPostClient;
-    private final WarehouseReadMapper warehouseReadMapper;
-    private final WarehouseCreateEditMapper warehouseCreateEditMapper;
+    private final WarehouseClient warehouseClient;
 
-    public Optional<PostOfficeReadDto> findByRef(String warehouseRef) {
-        GetWarehousesRequestDto request = new GetWarehousesRequestDto();
-        request.setRef(warehouseRef);
-        request.setCategoryOfWarehouse("Warehouse");
+    public Optional<WarehouseReadDto> findBy(WarehouseRequestDto request) {
+        if (request.getCategoryOfWarehouse() == null) {
+            request.setCategoryOfWarehouse("Warehouse");
+        }
 
-        return novaPostClient.getWarehouses(request).stream()
-                .map(warehouseReadMapper::map)
+        return warehouseClient.findAll(request).stream()
                 .findFirst();
-    }
-
-    public Optional<PostOfficeReadDto> find(PostOfficeRequestDto request) {
-        var map = getGetWarehousesRequestDto(request);
-        return novaPostClient.getWarehouses(map).stream()
-                .map(warehouseReadMapper::map)
-                .findFirst();
-    }
-
-    private GetWarehousesRequestDto getGetWarehousesRequestDto(PostOfficeRequestDto request) {
-        return warehouseCreateEditMapper.map(request);
     }
 }

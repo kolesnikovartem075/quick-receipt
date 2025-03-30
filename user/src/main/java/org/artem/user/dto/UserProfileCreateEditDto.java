@@ -1,7 +1,7 @@
 package org.artem.user.dto;
 
 import lombok.Value;
-import org.artem.user.dto.nova.post.PostOfficeDto;
+import org.artem.user.dto.nova.post.WarehouseRequestDto;
 
 @Value
 public class UserProfileCreateEditDto {
@@ -12,5 +12,5 @@ public class UserProfileCreateEditDto {
     String lastName;
     String phoneNumber;
     String city;
-    PostOfficeDto postOffice;
+    WarehouseRequestDto postOffice;
 }
