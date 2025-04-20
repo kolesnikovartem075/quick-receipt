@@ -4,28 +4,58 @@
 CREATE TABLE account
 (
     id           BIGSERIAL PRIMARY KEY,
-    name         VARCHAR(255),
-    nickname     VARCHAR(255) UNIQUE,
-    status       VARCHAR(50) DEFAULT 'active',
-    date_created TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
+    name         VARCHAR(64) NOT NULL,
+    nickname     VARCHAR(64) UNIQUE,
+    status       VARCHAR(16) NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 --changeset artem:2
-CREATE TABLE admin
+CREATE TABLE users
 (
     id               BIGSERIAL PRIMARY KEY,
-    external_user_id BIGINT UNIQUE,
-    account_id       BIGINT REFERENCES account (id),
-    role             VARCHAR(24)
+    external_user_id BIGINT,
+    account_id       BIGINT REFERENCES account (id) ON DELETE CASCADE,
+    role             VARCHAR(16) NOT NULL,
+    date_created     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (account_id, external_user_id)
 );
 
 --changeset artem:3
-CREATE TABLE account_sender
+CREATE TABLE contact
 (
     id              BIGSERIAL PRIMARY KEY,
-    account_id      BIGINT UNIQUE REFERENCES account (id) ON DELETE CASCADE,
+    account_id      BIGINT REFERENCES account (id) ON DELETE CASCADE,
     first_name      VARCHAR(64)  NOT NULL,
     last_name       VARCHAR(64)  NOT NULL,
-    phone_number    VARCHAR(16)  NOT NULL,
-    post_office_ref VARCHAR(264) NOT NULL
+    phone_number    VARCHAR(20)  NOT NULL,
+    post_office_ref VARCHAR(264) NOT NULL,
+    city_ref        VARCHAR(264) NOT NULL,
+    date_created    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (account_id, phone_number)
+);
+
+--changeset artem:4
+CREATE TABLE user_contact
+(
+    id           BIGSERIAL PRIMARY KEY,
+    user_id      BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    contact_id   BIGINT NOT NULL REFERENCES contact (id) ON DELETE CASCADE,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, contact_id)
+);
+
+--changeset artem:5
+CREATE TABLE account_contact
+(
+    contact_id   BIGINT PRIMARY KEY REFERENCES contact (id) ON DELETE CASCADE,
+    account_id   BIGINT NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+    api_key      VARCHAR(255) UNIQUE,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (account_id, contact_id)
 );

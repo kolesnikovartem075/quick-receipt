@@ -15,6 +15,13 @@ public class WarehouseService {
 
     private final WarehouseClient warehouseClient;
 
+    public Optional<WarehouseReadDto> findByRef(String ref) {
+        var warehouseRequestDto = new WarehouseRequestDto();
+        warehouseRequestDto.setRef(ref);
+
+        return findBy(warehouseRequestDto);
+    }
+
     public Optional<WarehouseReadDto> findBy(WarehouseRequestDto request) {
         if (request.getCategoryOfWarehouse() == null) {
             request.setCategoryOfWarehouse("Warehouse");

@@ -2,6 +2,7 @@ package org.artem.servicemanagement.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.servicemanagement.database.entity.Account;
+import org.artem.servicemanagement.database.entity.AccountStatus;
 import org.artem.servicemanagement.dto.AccountCreateEditDto;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,16 @@ public class AccountCreateEditMapper implements Mapper<AccountCreateEditDto, Acc
     }
 
     private void copy(AccountCreateEditDto object, Account account) {
+        var status = getStatus(object);
+
         account.setNickname(object.getNickname());
         account.setName(object.getName());
+        account.setStatus(status);
+    }
+
+    private AccountStatus getStatus(AccountCreateEditDto object) {
+        return object.getStatus() != null
+                ? AccountStatus.valueOf(object.getStatus())
+                : AccountStatus.ACTIVE;
     }
 }

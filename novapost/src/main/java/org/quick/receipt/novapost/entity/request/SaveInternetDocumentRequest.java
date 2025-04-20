@@ -25,13 +25,13 @@ public class SaveInternetDocumentRequest {
     private String serviceType;
 
     @JsonProperty("SeatsAmount")
-    private String seatsAmount;
+    private Integer seatsAmount;
 
     @JsonProperty("Description")
     private String description;
 
     @JsonProperty("Cost")
-    private String cost;
+    private Float cost;
 
     @JsonProperty("CitySender")
     private String citySender;

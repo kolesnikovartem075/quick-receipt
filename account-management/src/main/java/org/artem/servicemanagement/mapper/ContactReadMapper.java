@@ -1,46 +1,45 @@
 package org.artem.servicemanagement.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.database.entity.AccountSender;
+import org.artem.servicemanagement.database.entity.Contact;
 import org.artem.servicemanagement.dto.AccountReadDto;
-import org.artem.servicemanagement.dto.AccountSenderReadDto;
+import org.artem.servicemanagement.dto.ContactReadDto;
 import org.artem.servicemanagement.dto.nova.post.WarehouseReadDto;
-import org.artem.servicemanagement.dto.nova.post.WarehouseRequestDto;
 import org.artem.servicemanagement.service.WarehouseService;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccountSenderReadMapper implements Mapper<AccountSender, AccountSenderReadDto> {
-
+public class ContactReadMapper implements Mapper<Contact, ContactReadDto> {
 
     private final WarehouseService warehouseService;
     private final AccountReadMapper accountReadMapper;
 
     @Override
-    public AccountSenderReadDto map(AccountSender object) {
+    public ContactReadDto map(Contact object) {
         var account = getAccount(object);
         var warehouse = getWarehouse(object);
 
-
-        return AccountSenderReadDto.builder()
+        return ContactReadDto.builder()
                 .id(object.getId())
                 .firstName(object.getFirstName())
                 .lastName(object.getLastName())
+                .middleName(object.getMiddleName())
                 .phoneNumber(object.getPhoneNumber())
-                .warehouseReadDto(warehouse)
+                .warehouse(warehouse)
                 .account(account)
+                .dateCreated(object.getDateCreated())
+                .dateUpdated(object.getDateUpdated())
                 .build();
     }
 
-    private AccountReadDto getAccount(AccountSender object) {
+    private AccountReadDto getAccount(Contact object) {
         return accountReadMapper.map(object.getAccount());
     }
 
-    private WarehouseReadDto getWarehouse(AccountSender object) {
-        var warehouseRequestDto = new WarehouseRequestDto();
-        warehouseRequestDto.setRef(object.getPostOfficeRef());
 
-        return warehouseService.findBy(warehouseRequestDto).orElseThrow();
+    private WarehouseReadDto getWarehouse(Contact object) {
+        return warehouseService.findByRef(object.getPostOfficeRef())
+                .orElseThrow();
     }
 }

@@ -17,6 +17,10 @@ public interface NovaPostClient {
     @GetExchange
     ResponseBase<CounterpartySender> getCounterparties(@RequestBody RequestBase<GetCounterpartiesRequest> request);
 
+    ResponseBase<CounterpartySender> saveCounterparty(@RequestBody RequestBase<SaveCounterpartyRequest> request);
+
+    ResponseBase<CounterpartySender> updateCounterparty(@RequestBody RequestBase<SaveCounterpartyRequest> request);
+
     @GetExchange
     ResponseBase<CargoDescription> getCargoDescriptions(@RequestBody RequestBase<FindByStringRequest> request);
 

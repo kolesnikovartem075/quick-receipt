@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"admin", "accountSender"})
-@EqualsAndHashCode(exclude = {"admin", "accountSender"})
+@ToString(exclude = {"contactProfiles"})
+@EqualsAndHashCode(exclude = {"contactProfiles"})
 @Entity
 @Table
 public class Account implements BaseEntity<Long> {
@@ -20,11 +20,13 @@ public class Account implements BaseEntity<Long> {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String nickname;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    private List<Admin> admin;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    private List<AccountSender> accountSender;
+    @OneToMany(mappedBy = "account")
+    private List<AccountContactProfile> contactProfiles;
 }

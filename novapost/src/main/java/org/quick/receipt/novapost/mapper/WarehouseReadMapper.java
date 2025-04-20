@@ -9,13 +9,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WarehouseReadMapper implements Mapper<Warehouse, WarehouseReadDto> {
 
+    private final CityReadMapper cityReadMapper;
+
     @Override
     public WarehouseReadDto map(Warehouse object) {
+        var city = cityReadMapper.map(object);
+
         return WarehouseReadDto.builder()
                 .ref(object.getRef())
                 .description(object.getDescription())
                 .shortAddress(object.getShortAddress())
-                .cityDescription(object.getCityDescription())
+                .city(city)
                 .build();
     }
 }

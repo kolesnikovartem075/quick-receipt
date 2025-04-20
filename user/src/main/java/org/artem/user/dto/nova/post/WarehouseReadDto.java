@@ -8,5 +8,5 @@ public class WarehouseReadDto {
     String ref;
     String description;
     String shortAddress;
-    String cityDescription;
+    CityReadDto city;
 }

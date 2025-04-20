@@ -13,6 +13,5 @@ public class AccountReadDto {
     String name;
     String nickname;
     String status;
-    List<AdminReadDto> admins;
-    List<AccountSenderReadDto> senders;
+    List<AccountContactProfileReadDto> contactProfiles;
 }

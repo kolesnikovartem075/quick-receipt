@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset artem:1
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE users
 (
     id               BIGSERIAL PRIMARY KEY,
     external_user_id BIGINT    NOT NULL UNIQUE,
@@ -10,11 +10,11 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 --changeset artem:2
-CREATE TABLE IF NOT EXISTS user_profile
+CREATE TABLE contact
 (
     id              BIGSERIAL PRIMARY KEY,
     user_id         BIGINT REFERENCES users (id) ON DELETE CASCADE,
-    account_id      BIGINT          NOT NULL UNIQUE,
+    account_id      BIGINT       NOT NULL UNIQUE,
     first_name      VARCHAR(64)  NOT NULL,
     last_name       VARCHAR(64)  NOT NULL,
     phone_number    VARCHAR(16)  NOT NULL UNIQUE,

@@ -1,9 +1,13 @@
 package org.artem.servicemanagement.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.dto.AccountSenderCreateEditDto;
-import org.artem.servicemanagement.dto.AccountSenderReadDto;
-import org.artem.servicemanagement.service.AccountSenderService;
+
+import org.artem.servicemanagement.dto.UserCreateEditDto;
+import org.artem.servicemanagement.dto.UserFilter;
+import org.artem.servicemanagement.dto.UserReadDto;
+import org.artem.servicemanagement.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,35 +18,40 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
-@RequestMapping("/api/v1/account-senders")
+@RequestMapping("/api/v1/accounts/{accountId}/users")
 @RequiredArgsConstructor
-public class AccountSenderController {
+public class UserController {
 
 
-    private final AccountSenderService accountSenderService;
+    private final UserService userService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<UserReadDto> findAll(UserFilter userFilter, Pageable pageable) {
+        return userService.findAll(userFilter, pageable);
+    }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AccountSenderReadDto findById(@PathVariable Long id) {
-        return accountSenderService.findById(id)
+    public UserReadDto findById(@PathVariable Long id) {
+        return userService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountSenderReadDto create(@RequestBody AccountSenderCreateEditDto accountSender) {
-        return accountSenderService.create(accountSender);
+    public UserReadDto create(@RequestBody UserCreateEditDto user) {
+        return userService.create(user);
     }
 
     @PutMapping("/{id}")
-    public AccountSenderReadDto update(@PathVariable Long id,
-                               @RequestBody AccountSenderCreateEditDto accountSender) {
-        return accountSenderService.update(id, accountSender)
+    public UserReadDto update(@PathVariable Long id,
+                              @RequestBody UserCreateEditDto user) {
+        return userService.update(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        return accountSenderService.delete(id)
+        return userService.delete(id)
                 ? noContent().build()
                 : notFound().build();
     }
