@@ -19,7 +19,7 @@ import static org.springframework.http.ResponseEntity.notFound;
 
 
 @RestController
-@RequestMapping("/api/v1/users/{userId}/contacts")
+@RequestMapping("/api/v1/accounts/{accountId}/users/{userId}/contacts")
 @RequiredArgsConstructor
 public class UserContactController {
 
@@ -33,19 +33,23 @@ public class UserContactController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserContactReadDto create(@RequestBody UserContactCreateDto dto,
-                                     @PathVariable Long userId) {
+                                     @PathVariable Long userId,
+                                     @PathVariable String accountId) {
         return userContactService.create(dto);
     }
 
     @PutMapping("/{id}")
     public UserContactReadDto update(@PathVariable Long id,
-                                     @RequestBody UserContactEditDto dto) {
+                                     @RequestBody UserContactEditDto dto,
+                                     @PathVariable String accountId) {
         return userContactService.update(id, dto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, @PathVariable String userId) {
+    public ResponseEntity<?> delete(@PathVariable Long id,
+                                    @PathVariable String userId,
+                                    @PathVariable String accountId) {
         return userContactService.delete(id)
                 ? noContent().build()
                 : notFound().build();

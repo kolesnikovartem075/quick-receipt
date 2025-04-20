@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-from app.client.APIClient import create_user
+from app.client.APIClient import create_user_contact
 from app.config import username
 from app.keyboard.keyboard import confirm_nova_post_registration
 
@@ -121,7 +121,7 @@ async def register_finish(message: Message, state: FSMContext):
         },
     }
 
-    response = await create_user(user_payload)
+    response = await create_user_contact(None, user_payload)
 
     if response.status_code == 201:
         await message.answer(

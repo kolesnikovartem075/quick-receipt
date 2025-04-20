@@ -15,7 +15,7 @@ public class OrderReadMapper implements Mapper<Order, OrderReadDto> {
 
         return OrderReadDto.builder()
                 .id(object.getId())
-                .userId(object.getUserId())
+                .userId(object.getUserContactId())
                 .description(object.getDescription())
                 .status(object.getStatus().name())
                 .build();

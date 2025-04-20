@@ -19,7 +19,7 @@ public class Order implements BaseEntity<Long> {
     private Long id;
 
     private Long accountId;
-    private Long userId;
+    private Long userContactId;
 
     private String description;
 

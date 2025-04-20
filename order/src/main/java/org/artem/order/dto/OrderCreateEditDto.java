@@ -6,7 +6,7 @@ import lombok.Value;
 public class OrderCreateEditDto {
 
     Long accountId;
-    Long userId;
+    Long userContactId;
     String description;
     String status;
 }
