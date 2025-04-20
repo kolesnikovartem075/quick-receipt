@@ -21,13 +21,12 @@ public class WaybillService {
 
     public WaybillReadDto create(WaybillRequestDto waybillRequest) {
         var senderCounterparty = getCounterparty(CounterpartyType.SENDER);
-        var sender = waybillRequest.getAccountSender();
-        var senderCity = sender.getWarehouseReadDto().getCity().getRef();
-//        novaPostService.getCounterpartyContactPersons()
+        var sender = waybillRequest.getAccountContact();
+        var senderCity = sender.getContact().getWarehouse().getCity().getRef();
 
         var recipientCounterparty = getCounterparty(CounterpartyType.RECIPIENT);
-        var user = waybillRequest.getUser();
-        var userCity = user.getWarehouseReadDto().getCity().getRef();
+        var userContact = waybillRequest.getUser().getContact();
+        var userCity = userContact.getWarehouse().getCity().getRef();
 
         var internetDocumentRequest = new SaveInternetDocumentRequest();
         internetDocumentRequest.setPayerType("Sender");
@@ -40,17 +39,16 @@ public class WaybillService {
         internetDocumentRequest.setCost(0f);
         internetDocumentRequest.setCitySender(senderCity);
         internetDocumentRequest.setSender(senderCounterparty);
-        internetDocumentRequest.setSenderAddress(sender.getWarehouseReadDto().getRef());
+        internetDocumentRequest.setSenderAddress(sender.getContact().getWarehouse().getRef());
         internetDocumentRequest.setContactSender(null);
-        internetDocumentRequest.setSendersPhone(user.getPhoneNumber());
+        internetDocumentRequest.setSendersPhone(userContact.getPhoneNumber());
         internetDocumentRequest.setCityRecipient(userCity);
         internetDocumentRequest.setRecipient(recipientCounterparty);
-        internetDocumentRequest.setRecipientAddress(user.getWarehouseReadDto().getRef());
+        internetDocumentRequest.setRecipientAddress(userContact.getWarehouse().getRef());
         internetDocumentRequest.setContactRecipient(null);
-        internetDocumentRequest.setRecipientsPhone(user.getPhoneNumber());
+        internetDocumentRequest.setRecipientsPhone(userContact.getPhoneNumber());
 
-
-        var internetDocuments = novaPostService.saveInternetDocument(internetDocumentRequest);
+        var internetDocuments = novaPostService.saveInternetDocument(sender.getApiKey(), internetDocumentRequest);
         return null;
     }
 

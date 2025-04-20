@@ -3,15 +3,18 @@ package org.quick.receipt.novapost.dto;
 import lombok.Builder;
 import lombok.Value;
 
+import java.time.LocalDateTime;
+
 @Value
 @Builder
-public class UserProfileReadDto extends CounterpartyContactDto {
+public class ContactReadDto {
 
     Long id;
-    Long externalUserId;
-    Long accountId;
     String firstName;
     String lastName;
+    String middleName;
     String phoneNumber;
-    WarehouseReadDto warehouseReadDto;
+    WarehouseReadDto warehouse;
+    LocalDateTime dateCreated;
+    LocalDateTime dateUpdated;
 }

@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Data
 public class WaybillRequestDto {
 
-    AccountSenderReadDto accountSender;
-    UserProfileReadDto user;
+    AccountContactReadDto accountContact;
+    UserContactReadDto user;
     OrderReadDto order;
     LocalDateTime createdAt;
 }

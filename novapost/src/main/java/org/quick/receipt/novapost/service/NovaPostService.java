@@ -1,7 +1,6 @@
 package org.quick.receipt.novapost.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.quick.receipt.novapost.client.NovaPostClient;
 import org.quick.receipt.novapost.entity.request.*;
 import org.quick.receipt.novapost.entity.response.*;
@@ -127,7 +126,7 @@ public class NovaPostService {
                 .orElseThrow();
     }
 
-    public List<InternetDocument> saveInternetDocument(SaveInternetDocumentRequest request) {
+    public List<InternetDocument> saveInternetDocument(String apiKey, SaveInternetDocumentRequest request) {
         RequestBase<SaveInternetDocumentRequest> requestBase = RequestBase.<SaveInternetDocumentRequest>builder()
                 .apiKey(apiKey)
                 .modelName("InternetDocumentGeneral")
