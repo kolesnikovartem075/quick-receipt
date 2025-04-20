@@ -2,7 +2,8 @@ package org.artem.servicemanagement.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.servicemanagement.dto.UserContactCreateDto;
-import org.artem.servicemanagement.dto.UserContactProfileFilter;
+import org.artem.servicemanagement.dto.UserContactEditDto;
+import org.artem.servicemanagement.dto.UserContactFilter;
 import org.artem.servicemanagement.dto.UserContactReadDto;
 import org.artem.servicemanagement.service.UserContactService;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,12 @@ import static org.springframework.http.ResponseEntity.notFound;
 @RestController
 @RequestMapping("/api/v1/users/{userId}/contacts")
 @RequiredArgsConstructor
-public class UserContactProfileController {
+public class UserContactController {
 
     private final UserContactService userContactService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<UserContactReadDto> findAll(UserContactProfileFilter filter, Pageable pageable, @PathVariable Long userId) {
+    public Page<UserContactReadDto> findAll(UserContactFilter filter, Pageable pageable, @PathVariable Long userId) {
         return userContactService.findAll(filter, pageable);
     }
 
@@ -38,13 +39,13 @@ public class UserContactProfileController {
 
     @PutMapping("/{id}")
     public UserContactReadDto update(@PathVariable Long id,
-                                     @RequestBody UserContactCreateDto dto) {
+                                     @RequestBody UserContactEditDto dto) {
         return userContactService.update(id, dto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id, @PathVariable String userId) {
         return userContactService.delete(id)
                 ? noContent().build()
                 : notFound().build();

@@ -1,9 +1,10 @@
 package org.artem.servicemanagement.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.dto.AccountContactProfileCreateEditDto;
-import org.artem.servicemanagement.dto.AccountContactProfileReadDto;
-import org.artem.servicemanagement.dto.AccountReadDto;
+import org.artem.servicemanagement.dto.AccountContactCreateDto;
+import org.artem.servicemanagement.dto.AccountContactEditDto;
+import org.artem.servicemanagement.dto.AccountContactFilter;
+import org.artem.servicemanagement.dto.AccountContactReadDto;
 import org.artem.servicemanagement.service.AccountContactService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,21 +26,23 @@ public class AccountContactController {
     private final AccountContactService accountContactService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<AccountReadDto> findAll(@PathVariable String accountId, Pageable pageable) {
-        return accountContactService.findAll(accountId, pageable);
+    public Page<AccountContactReadDto> findAll(@PathVariable String accountId,
+                                               AccountContactFilter filter,
+                                               Pageable pageable) {
+        return accountContactService.findAll(filter, pageable);
     }
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountContactProfileReadDto create(@RequestBody AccountContactProfileCreateEditDto accountSender) {
-        return accountContactService.create(accountSender);
+    public AccountContactReadDto create(@RequestBody AccountContactCreateDto accountContact) {
+        return accountContactService.create(accountContact);
     }
 
     @PutMapping("/{id}")
-    public AccountContactProfileReadDto update(@PathVariable Long id,
-                                               @RequestBody AccountContactProfileCreateEditDto accountSender) {
-        return accountContactService.update(id, accountSender)
+    public AccountContactReadDto update(@PathVariable Long id,
+                                        @RequestBody AccountContactEditDto accountContact) {
+        return accountContactService.update(id, accountContact)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

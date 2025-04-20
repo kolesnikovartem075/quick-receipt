@@ -20,7 +20,9 @@ public class AccountSpecification implements Specification<Account> {
     @Override
     public Predicate toPredicate(Root<Account> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         var predicates = SPredicates.builder()
-//                .add(criteria.accountId(), id -> builder.equal(root.get("accountId"), id))
+                .add(criteria.name(), name -> builder.equal(root.get("name"), name))
+                .add(criteria.nickname(), nickname -> builder.equal(root.get("nickname"), nickname))
+                .add(criteria.status(), status -> builder.equal(root.get("status"), status))
                 .build();
 
         return builder.and(predicates.toArray(new Predicate[0]));

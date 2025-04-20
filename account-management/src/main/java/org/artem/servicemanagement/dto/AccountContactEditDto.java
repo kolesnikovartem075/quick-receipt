@@ -5,9 +5,11 @@ import lombok.Value;
 
 @Value
 @Builder
-public class AccountContactProfileCreateEditDto {
+public class AccountContactEditDto {
 
     Long accountId;
     Long contactId;
     String apiKey;
+
+    ContactCreateEditDto contactCreateEditDto;
 }

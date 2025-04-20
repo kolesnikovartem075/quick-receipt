@@ -28,5 +28,5 @@ public class Account implements BaseEntity<Long> {
     private AccountStatus status;
 
     @OneToMany(mappedBy = "account")
-    private List<AccountContactProfile> contactProfiles;
+    private List<AccountContact> contactProfiles;
 }

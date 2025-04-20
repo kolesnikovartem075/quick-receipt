@@ -1,9 +1,8 @@
 package org.artem.servicemanagement.mapper;
 
-public interface Mapper<F, T> {
+public interface Mapper<F, T> extends CreateMapper<F, T>, EditMapper<F, T> {
 
-    T map(F object);
-
+    @Override
     default T map(F fromObject, T toObject) {
         return toObject;
     }

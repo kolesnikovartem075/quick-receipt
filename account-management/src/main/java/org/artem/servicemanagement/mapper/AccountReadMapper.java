@@ -2,7 +2,7 @@ package org.artem.servicemanagement.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.servicemanagement.database.entity.Account;
-import org.artem.servicemanagement.dto.AccountContactProfileReadDto;
+import org.artem.servicemanagement.dto.AccountContactReadDto;
 import org.artem.servicemanagement.dto.AccountReadDto;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class AccountReadMapper implements Mapper<Account, AccountReadDto> {
                 .build();
     }
 
-    private List<AccountContactProfileReadDto> getContactProfiles(Account object) {
+    private List<AccountContactReadDto> getContactProfiles(Account object) {
         return object.getContactProfiles().stream()
                 .map(accountContactReadMapper::map)
                 .toList();

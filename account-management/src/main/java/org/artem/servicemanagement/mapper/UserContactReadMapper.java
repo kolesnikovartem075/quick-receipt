@@ -1,7 +1,7 @@
 package org.artem.servicemanagement.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.database.entity.UserContactProfile;
+import org.artem.servicemanagement.database.entity.UserContact;
 import org.artem.servicemanagement.dto.ContactReadDto;
 import org.artem.servicemanagement.dto.UserContactReadDto;
 import org.artem.servicemanagement.dto.UserReadDto;
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserContactReadMapper implements Mapper<UserContactProfile, UserContactReadDto> {
+public class UserContactReadMapper implements Mapper<UserContact, UserContactReadDto> {
 
     private final UserReadMapper userReadMapper;
     private final ContactReadMapper contactReadMapper;
 
     @Override
-    public UserContactReadDto map(UserContactProfile object) {
+    public UserContactReadDto map(UserContact object) {
         var user = getUser(object);
         var contact = getContact(object);
 
@@ -28,11 +28,11 @@ public class UserContactReadMapper implements Mapper<UserContactProfile, UserCon
                 .build();
     }
 
-    private UserReadDto getUser(UserContactProfile object) {
+    private UserReadDto getUser(UserContact object) {
         return userReadMapper.map(object.getUser());
     }
 
-    private ContactReadDto getContact(UserContactProfile object) {
+    private ContactReadDto getContact(UserContact object) {
         return contactReadMapper.map(object.getContact());
     }
 }

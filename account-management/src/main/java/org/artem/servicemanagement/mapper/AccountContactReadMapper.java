@@ -1,24 +1,24 @@
 package org.artem.servicemanagement.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.artem.servicemanagement.database.entity.AccountContactProfile;
-import org.artem.servicemanagement.dto.AccountContactProfileReadDto;
+import org.artem.servicemanagement.database.entity.AccountContact;
+import org.artem.servicemanagement.dto.AccountContactReadDto;
 import org.artem.servicemanagement.dto.ContactReadDto;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccountContactReadMapper implements Mapper<AccountContactProfile, AccountContactProfileReadDto> {
+public class AccountContactReadMapper implements Mapper<AccountContact, AccountContactReadDto> {
 
     private final AccountReadMapper accountReadMapper;
     private final ContactReadMapper contactReadMapper;
 
     @Override
-    public AccountContactProfileReadDto map(AccountContactProfile object) {
+    public AccountContactReadDto map(AccountContact object) {
 //        var account = getAccount(object);
         var contact = getContact(object);
 
-        return AccountContactProfileReadDto.builder()
+        return AccountContactReadDto.builder()
                 .id(object.getId())
                 .apiKey(object.getApiKey())
 //                .account(account)
@@ -28,7 +28,7 @@ public class AccountContactReadMapper implements Mapper<AccountContactProfile, A
                 .build();
     }
 
-    private ContactReadDto getContact(AccountContactProfile object) {
+    private ContactReadDto getContact(AccountContact object) {
         return contactReadMapper.map(object.getContact());
     }
 

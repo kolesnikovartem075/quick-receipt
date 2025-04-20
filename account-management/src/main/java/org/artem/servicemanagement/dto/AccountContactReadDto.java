@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Value
 @Builder
-public class AccountContactProfileReadDto {
+public class AccountContactReadDto {
 
 
     Long id;

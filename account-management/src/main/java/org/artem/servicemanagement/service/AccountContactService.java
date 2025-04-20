@@ -2,11 +2,16 @@ package org.artem.servicemanagement.service;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.servicemanagement.database.repository.AccountContactProfileRepository;
-import org.artem.servicemanagement.dto.AccountContactProfileCreateEditDto;
-import org.artem.servicemanagement.dto.AccountContactProfileReadDto;
-import org.artem.servicemanagement.mapper.AccountContactCreateEditMapper;
+import org.artem.servicemanagement.database.specification.AccountContactSpecification;
+import org.artem.servicemanagement.dto.AccountContactCreateDto;
+import org.artem.servicemanagement.dto.AccountContactEditDto;
+import org.artem.servicemanagement.dto.AccountContactFilter;
+import org.artem.servicemanagement.dto.AccountContactReadDto;
+import org.artem.servicemanagement.mapper.AccountContactCreateMapper;
+import org.artem.servicemanagement.mapper.AccountContactEditMapper;
 import org.artem.servicemanagement.mapper.AccountContactReadMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,39 +26,40 @@ public class AccountContactService {
 
     private final AccountContactProfileRepository accountContactProfileRepository;
     private final AccountContactReadMapper accountContactReadMapper;
-    private final AccountContactCreateEditMapper accountContactCreateEditMapper;
+    private final AccountContactCreateMapper accountContactCreateMapper;
+    private final AccountContactEditMapper accountContactEditMapper;
 
-    public List<AccountContactProfileReadDto> findAll() {
+    public List<AccountContactReadDto> findAll() {
         return accountContactProfileRepository.findAll().stream()
                 .map(accountContactReadMapper::map)
                 .toList();
     }
 
 
-    public Page<AccountContactProfileReadDto> findAll(AccountContactProfileFilter filter, Pageable pageable) {
-        var specification = new AccountContactProfileSpecification(filter);
+    public Page<AccountContactReadDto> findAll(AccountContactFilter filter, Pageable pageable) {
+        var specification = new AccountContactSpecification(filter);
         return accountContactProfileRepository.findAll(specification, pageable)
                 .map(accountContactReadMapper::map);
     }
 
-    public Optional<AccountContactProfileReadDto> findById(Long id) {
+    public Optional<AccountContactReadDto> findById(Long id) {
         return accountContactProfileRepository.findById(id)
                 .map(accountContactReadMapper::map);
     }
 
     @Transactional
-    public AccountContactProfileReadDto create(AccountContactProfileCreateEditDto dto) {
+    public AccountContactReadDto create(AccountContactCreateDto dto) {
         return Optional.of(dto)
-                .map(accountContactCreateEditMapper::map)
+                .map(accountContactCreateMapper::map)
                 .map(accountContactProfileRepository::save)
                 .map(accountContactReadMapper::map)
                 .orElseThrow();
     }
 
     @Transactional
-    public Optional<AccountContactProfileReadDto> update(Long id, AccountContactProfileCreateEditDto dto) {
+    public Optional<AccountContactReadDto> update(Long id, AccountContactEditDto dto) {
         return accountContactProfileRepository.findById(id)
-                .map(entity -> accountContactCreateEditMapper.map(dto, entity))
+                .map(entity -> accountContactEditMapper.map(dto, entity))
                 .map(accountContactProfileRepository::saveAndFlush)
                 .map(accountContactReadMapper::map);
     }

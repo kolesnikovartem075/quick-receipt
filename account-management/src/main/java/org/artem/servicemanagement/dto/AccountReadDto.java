@@ -13,5 +13,5 @@ public class AccountReadDto {
     String name;
     String nickname;
     String status;
-    List<AccountContactProfileReadDto> contactProfiles;
+    List<AccountContactReadDto> contactProfiles;
 }

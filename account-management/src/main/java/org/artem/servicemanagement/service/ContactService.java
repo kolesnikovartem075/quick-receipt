@@ -52,11 +52,10 @@ public class ContactService {
     }
 
     @Transactional
-    public Optional<ContactReadDto> update(Long id, ContactCreateEditDto contactDto) {
+    public Optional<Contact> update(Long id, ContactCreateEditDto contactDto) {
         return contactRepository.findById(id)
                 .map(entity -> contactCreateEditMapper.map(contactDto, entity))
-                .map(contactRepository::saveAndFlush)
-                .map(contactReadMapper::map);
+                .map(contactRepository::saveAndFlush);
     }
 
     @Transactional

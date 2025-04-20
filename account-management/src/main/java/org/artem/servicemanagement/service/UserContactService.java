@@ -2,11 +2,13 @@ package org.artem.servicemanagement.service;
 
 import lombok.RequiredArgsConstructor;
 import org.artem.servicemanagement.database.repository.UserContactProfileRepository;
-import org.artem.servicemanagement.database.specification.UserContactProfileSpecification;
+import org.artem.servicemanagement.database.specification.UserContactSpecification;
 import org.artem.servicemanagement.dto.UserContactCreateDto;
-import org.artem.servicemanagement.dto.UserContactProfileFilter;
+import org.artem.servicemanagement.dto.UserContactEditDto;
+import org.artem.servicemanagement.dto.UserContactFilter;
 import org.artem.servicemanagement.dto.UserContactReadDto;
 import org.artem.servicemanagement.mapper.UserContactCreateMapper;
+import org.artem.servicemanagement.mapper.UserContactEditMapper;
 import org.artem.servicemanagement.mapper.UserContactReadMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ public class UserContactService {
     private final UserContactProfileRepository userContactProfileRepository;
     private final UserContactReadMapper userContactReadMapper;
     private final UserContactCreateMapper userContactCreateMapper;
+    private final UserContactEditMapper userContactEditMapper;
 
     public List<UserContactReadDto> findAll() {
         return userContactProfileRepository.findAll().stream()
@@ -31,8 +34,8 @@ public class UserContactService {
                 .toList();
     }
 
-    public Page<UserContactReadDto> findAll(UserContactProfileFilter filter, Pageable pageable) {
-        var specification = new UserContactProfileSpecification(filter);
+    public Page<UserContactReadDto> findAll(UserContactFilter filter, Pageable pageable) {
+        var specification = new UserContactSpecification(filter);
         return userContactProfileRepository.findAll(specification, pageable)
                 .map(userContactReadMapper::map);
     }
@@ -53,9 +56,9 @@ public class UserContactService {
     }
 
     @Transactional
-    public Optional<UserContactReadDto> update(Long id, UserContactCreateDto dto) {
+    public Optional<UserContactReadDto> update(Long id, UserContactEditDto dto) {
         return userContactProfileRepository.findById(id)
-                .map(entity -> userContactCreateMapper.map(dto, entity))
+                .map(entity -> userContactEditMapper.map(dto, entity))
                 .map(userContactProfileRepository::saveAndFlush)
                 .map(userContactReadMapper::map);
     }
