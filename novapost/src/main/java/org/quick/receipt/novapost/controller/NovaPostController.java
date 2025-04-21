@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.quick.receipt.novapost.entity.request.*;
 import org.quick.receipt.novapost.entity.response.*;
 import org.quick.receipt.novapost.service.NovaPostService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -62,7 +59,8 @@ public class NovaPostController {
     }
 
     @PostMapping("/save-internet-document")
-    public List<InternetDocument> saveInternetDocument(@RequestBody SaveInternetDocumentRequest request) {
-        return novaPostService.saveInternetDocument(request);
+    public List<InternetDocument> saveInternetDocument(@RequestBody SaveInternetDocumentRequest request,
+                                                       @RequestHeader String token) {
+        return novaPostService.saveInternetDocument(token, request);
     }
 }

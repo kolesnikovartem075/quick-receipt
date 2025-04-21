@@ -30,6 +30,7 @@ CREATE TABLE contact
     account_id      BIGINT REFERENCES account (id) ON DELETE CASCADE,
     first_name      VARCHAR(64)  NOT NULL,
     last_name       VARCHAR(64)  NOT NULL,
+    middle_name     VARCHAR(64)  NOT NULL,
     phone_number    VARCHAR(20)  NOT NULL,
     post_office_ref VARCHAR(264) NOT NULL,
     city_ref        VARCHAR(264) NOT NULL,
@@ -52,8 +53,9 @@ CREATE TABLE user_contact
 --changeset artem:5
 CREATE TABLE account_contact
 (
-    contact_id   BIGINT PRIMARY KEY REFERENCES contact (id) ON DELETE CASCADE,
-    account_id   BIGINT NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+    id           BIGSERIAL PRIMARY KEY,
+    contact_id   BIGINT REFERENCES contact (id) ON DELETE CASCADE,
+    account_id   BIGINT REFERENCES account (id) ON DELETE CASCADE,
     api_key      VARCHAR(255) UNIQUE,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

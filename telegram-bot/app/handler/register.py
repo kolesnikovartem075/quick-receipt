@@ -5,7 +5,6 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_user_contact
-from app.config import username
 from app.keyboard.keyboard import confirm_nova_post_registration
 
 register_router = Router()
@@ -13,6 +12,7 @@ register_router = Router()
 
 class Register(StatesGroup):
     telegram_id = State()
+    user_id = State()
     first_name = State()
     last_name = State()
     number = State()
@@ -109,19 +109,21 @@ async def register_finish(message: Message, state: FSMContext):
     await state.update_data(number=message.text)
     data = await state.get_data()
 
-    user_payload = {
-        "botNickname": username,
-        "telegramId": data["telegram_id"],
-        "firstName": data["first_name"],
-        "lastName": data["last_name"],
-        "phoneNumber": data["number"],
-        "city": data["city"],
-        "postOffice": {
-            "findByString": data["nova_post_address"]
+    # Create user contact data according to new structure
+    contact_data = {
+        "contactCreateEditDto": {
+            "firstName": data["first_name"],
+            "lastName": data["last_name"],
+            "phoneNumber": data["number"],
+            "city": data["city"],
+            "postOffice": {
+                "findByString": data["nova_post_address"]
+            }
         },
+        "externalUserId": str(data["telegram_id"])
     }
 
-    response = await create_user_contact(None, user_payload)
+    response = await create_user_contact(data['user_id'], contact_data)
 
     if response.status_code == 201:
         await message.answer(

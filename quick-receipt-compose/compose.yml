@@ -1,6 +1,6 @@
 services:
   users-database:
-    container_name: users-database
+    container_name: account-management-database
     ports:
       - "5432:5432"
     extends:
@@ -10,13 +10,6 @@ services:
     container_name: orders-database
     ports:
       - "5433:5432"
-    extends:
-      file: compose-common-config.yml
-      service: microservice-database-config
-  accounts-database:
-    container_name: accounts-db
-    ports:
-      - "5434:5432"
     extends:
       file: compose-common-config.yml
       service: microservice-database-config

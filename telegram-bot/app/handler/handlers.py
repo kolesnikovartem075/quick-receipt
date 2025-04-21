@@ -4,10 +4,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-import app.user_confirmation as kb
-from app.client.APIClient import get_user_by_telegram_id
-from app.dto.user import UserReadDto
+from app.client.APIClient import create_user, fetch_user_contact, fetch_user
 from app.handler.order import show_user_details
+from app.keyboard import keyboard
 from app.middlewares import TestMiddleware
 
 router = Router()
@@ -22,14 +21,18 @@ class Register(StatesGroup):
 
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext):
-    user_id = message.from_user.id
-    user: UserReadDto = await get_user_by_telegram_id(user_id)
-    if user:
-        await show_user_details(message, user, state)
+    telegram_user_id = message.from_user.id
+    user = await fetch_user(telegram_user_id)
+    user_contact = await fetch_user_contact(user.id)
+    if user_contact:
+        await show_user_details(message, user_contact, state)
         return
+
+    user_data = {"externalUserId": telegram_user_id}
+    await create_user(user_data)
     await message.reply(f'Привіт {message.from_user.first_name},\n'
                         f'Для оформлення доставки треба натиснути кнопку нижче!',
-                        reply_markup=kb.register)
+                        reply_markup=keyboard.register)
 
 
 @router.message(F.text == 'Как дела?')
@@ -52,4 +55,4 @@ async def get_photo(message: Message):
 @router.callback_query(F.data == 'catalog')
 async def catalog(callback: CallbackQuery):
     await callback.answer('catalog pressed')
-    await callback.message.edit_text('catalog pressed', reply_markup=await kb.inline_cars())
+    await callback.message.edit_text('catalog pressed', reply_markup=await keyboard.inline_cars())

@@ -4,8 +4,8 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_order
-from app.dto.user import UserReadDto
 from app.keyboard.keyboard import order_confirmation
+from app.model.user_contact import UserContactRead
 
 order_router = Router()
 
@@ -16,19 +16,19 @@ class Order(StatesGroup):
     description = State()
 
 
-async def show_user_details(message: Message, user: UserReadDto, state: FSMContext):
+async def show_user_details(message: Message, user_contact: UserContactRead, state: FSMContext):
     text = (
         "📋 *Ваші дані:* \n\n"
-        f"👤 Ім'я: {user.first_name}\n"
-        f"👤 Прізвище: {user.last_name}\n"
-        f"📍 Місто: {user.post_office.city_description}\n"
-        f"🏢 Відділення Нової Пошти: {user.post_office.description}\n"
-        f"📞 Телефон: {user.phone_number}\n\n"
+        f"👤 Ім'я: {user_contact.contact.first_name}\n"
+        f"👤 Прізвище: {user_contact.contact.last_name}\n"
+        f"📍 Місто: {user_contact.contact.warehouse.description}\n"
+        f"🏢 Відділення Нової Пошти: {user_contact.contact.warehouse.description}\n"
+        f"📞 Телефон: {user_contact.contact.phone_number}\n\n"
         "Додайте опис (необов'язково) або підтвердьте замовлення:"
     )
     await message.answer(text, reply_markup=order_confirmation, parse_mode="Markdown")
-    await state.update_data(user_id=user.user_id)
-    await state.update_data(account_id=user.account_id)
+    await state.update_data(user_id=user_contact.user.id)
+    await state.update_data(account_id=user_contact.user.account_id)
     await state.set_state(Order.description)
 
 

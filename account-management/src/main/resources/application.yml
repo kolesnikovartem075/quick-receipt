@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8080
 spring:
   application:
     name: "account-management"
@@ -10,7 +10,7 @@ spring:
       - "optional:file:../.env[.properties]"
       - "optional:configserver:http://localhost:8071/"
   datasource:
-    url: jdbc:postgresql://localhost:5434/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: ${db.username}
     password: ${db.password}
     driver-class-name: org.postgresql.Driver

@@ -11,13 +11,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CounterpartyContactRequestMapper {
 
-    private final CounterpartyService counterpartyService;
-
     public GetCounterpartyContactPersonsRequest map(CounterpartyType type, CounterpartyContactDto object) {
-        var counterparty = counterpartyService.getCounterparty(type);
-
         return GetCounterpartyContactPersonsRequest.builder()
-                .ref(counterparty)
+//                .ref(counterparty)
                 .findByString(object.getPhoneNumber())
                 .build();
     }
