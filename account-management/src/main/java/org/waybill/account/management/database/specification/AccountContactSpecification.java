@@ -21,14 +21,14 @@ public class AccountContactSpecification implements Specification<AccountContact
         Join<AccountContact, Contact> contactJoin = root.join("contact", JoinType.INNER);
 
         var predicates = SPredicates.builder()
-                .add(criteria.accountId(), accountId -> builder.equal(accountJoin.get("id"), accountId))
-                .add(criteria.apiKey(), apiKey -> builder.equal(accountJoin.get("apiKey"), apiKey))
-                .add(criteria.name(), name -> builder.like(builder.lower(accountJoin.get("name")), "%" + name.toLowerCase() + "%"))
-                .add(criteria.nickname(), nickname -> builder.like(builder.lower(accountJoin.get("nickname")), "%" + nickname.toLowerCase() + "%"))
-                .add(criteria.status(), status -> builder.equal(accountJoin.get("status"), status))
-                .add(criteria.firstName(), firstName -> builder.like(builder.lower(contactJoin.get("firstName")), "%" + firstName.toLowerCase() + "%"))
-                .add(criteria.lastName(), lastName -> builder.like(builder.lower(contactJoin.get("lastName")), "%" + lastName.toLowerCase() + "%"))
-                .add(criteria.phoneNumber(), phoneNumber -> builder.equal(contactJoin.get("phoneNumber"), phoneNumber)).build();
+                .add(criteria.getAccountId(), accountId -> builder.equal(accountJoin.get("id"), accountId))
+                .add(criteria.getApiKey(), apiKey -> builder.equal(accountJoin.get("apiKey"), apiKey))
+                .add(criteria.getName(), name -> builder.like(builder.lower(accountJoin.get("name")), "%" + name.toLowerCase() + "%"))
+                .add(criteria.getNickname(), nickname -> builder.like(builder.lower(accountJoin.get("nickname")), "%" + nickname.toLowerCase() + "%"))
+                .add(criteria.getStatus(), status -> builder.equal(accountJoin.get("status"), status))
+                .add(criteria.getFirstName(), firstName -> builder.like(builder.lower(contactJoin.get("firstName")), "%" + firstName.toLowerCase() + "%"))
+                .add(criteria.getLastName(), lastName -> builder.like(builder.lower(contactJoin.get("lastName")), "%" + lastName.toLowerCase() + "%"))
+                .add(criteria.getPhoneNumber(), phoneNumber -> builder.equal(contactJoin.get("phoneNumber"), phoneNumber)).build();
 
         return builder.and(predicates.toArray(new Predicate[0]));
     }

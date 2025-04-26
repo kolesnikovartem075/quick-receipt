@@ -24,12 +24,12 @@ public class UserContactSpecification implements Specification<UserContact> {
         Join<User, Account> accountJoin = userJoin.join("account", JoinType.INNER);
 
         var predicates = SPredicates.builder()
-                .add(criteria.externalUserId(), externalUserId -> builder.equal(userJoin.get("externalUserId"), externalUserId))
-                .add(criteria.role(), role -> builder.equal(userJoin.get("role"), role))
-                .add(criteria.accountId(), accountId -> builder.equal(accountJoin.get("id"), accountId))
-                .add(criteria.firstName(), firstName -> builder.like(builder.lower(contactJoin.get("firstName")), "%" + firstName.toLowerCase() + "%"))
-                .add(criteria.lastName(), lastName -> builder.like(builder.lower(contactJoin.get("lastName")), "%" + lastName.toLowerCase() + "%"))
-                .add(criteria.phoneNumber(), phoneNumber -> builder.equal(contactJoin.get("phoneNumber"), phoneNumber))
+                .add(criteria.getExternalUserId(), externalUserId -> builder.equal(userJoin.get("externalUserId"), externalUserId))
+                .add(criteria.getRole(), role -> builder.equal(userJoin.get("role"), role))
+                .add(criteria.getAccountId(), accountId -> builder.equal(accountJoin.get("id"), accountId))
+                .add(criteria.getFirstName(), firstName -> builder.like(builder.lower(contactJoin.get("firstName")), "%" + firstName.toLowerCase() + "%"))
+                .add(criteria.getLastName(), lastName -> builder.like(builder.lower(contactJoin.get("lastName")), "%" + lastName.toLowerCase() + "%"))
+                .add(criteria.getPhoneNumber(), phoneNumber -> builder.equal(contactJoin.get("phoneNumber"), phoneNumber))
                 .build();
         return builder.and(predicates.toArray(new Predicate[0]));
     }

@@ -30,7 +30,7 @@ CREATE TABLE contact
     account_id      BIGINT REFERENCES account (id) ON DELETE CASCADE,
     first_name      VARCHAR(64)  NOT NULL,
     last_name       VARCHAR(64)  NOT NULL,
-    middle_name     VARCHAR(64)  NOT NULL,
+    middle_name     VARCHAR(64),
     phone_number    VARCHAR(20)  NOT NULL,
     post_office_ref VARCHAR(264) NOT NULL,
     city_ref        VARCHAR(264) NOT NULL,

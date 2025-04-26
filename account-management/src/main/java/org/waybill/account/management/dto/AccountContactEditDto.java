@@ -1,10 +1,8 @@
 package org.waybill.account.management.dto;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 
-@Value
-@Builder
+@Data
 public class AccountContactEditDto {
 
     Long accountId;

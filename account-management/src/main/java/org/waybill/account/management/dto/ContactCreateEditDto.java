@@ -11,6 +11,6 @@ public class ContactCreateEditDto {
     String lastName;
     String middleName;
     String phoneNumber;
-    String postOfficeRef;
+    String postOffice;
     String city;
 }

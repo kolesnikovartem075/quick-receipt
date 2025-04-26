@@ -1,11 +1,6 @@
 package org.waybill.account.management.controller;
 
 import lombok.RequiredArgsConstructor;
-
-import org.waybill.account.management.dto.UserCreateEditDto;
-import org.waybill.account.management.dto.UserFilter;
-import org.waybill.account.management.dto.UserReadDto;
-import org.waybill.account.management.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,6 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.waybill.account.management.dto.UserCreateEditDto;
+import org.waybill.account.management.dto.UserFilter;
+import org.waybill.account.management.dto.UserReadDto;
+import org.waybill.account.management.service.UserService;
 
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.notFound;
@@ -31,21 +30,24 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserReadDto findById(@PathVariable Long id) {
+    public UserReadDto findById(@PathVariable Long id,
+                                @PathVariable Long accountId) {
         return userService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDto create(@RequestBody UserCreateEditDto user) {
-        return userService.create(user);
+    public UserReadDto create(@RequestBody UserCreateEditDto user,
+                              @PathVariable Long accountId) {
+        return userService.create(new UserCreateEditDto(user.getExternalUserId(), accountId, user.getRole()));
     }
 
     @PutMapping("/{id}")
     public UserReadDto update(@PathVariable Long id,
-                              @RequestBody UserCreateEditDto user) {
-        return userService.update(id, user)
+                              @RequestBody UserCreateEditDto user,
+                              @PathVariable Long accountId) {
+        return userService.update(id, new UserCreateEditDto(user.getExternalUserId(), accountId, user.getRole()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

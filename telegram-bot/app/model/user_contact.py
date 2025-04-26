@@ -1,12 +1,12 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_snake
+from pydantic.alias_generators import to_camel
 from typing import Optional
 
 
 class BaseSchema(BaseModel):
     model_config = ConfigDict(
-        alias_generator=to_snake,
+        alias_generator=to_camel,
         populate_by_name=True,
         from_attributes=True,
     )
@@ -52,3 +52,11 @@ class UserContactRead(BaseSchema):
     contact: ContactRead
     date_created: Optional[datetime]
     date_updated: Optional[datetime]
+
+
+class OrderRead(BaseSchema):
+    id: int
+    account_id: int
+    user_id: int
+    description: str
+    status: str

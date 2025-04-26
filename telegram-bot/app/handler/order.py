@@ -21,7 +21,7 @@ async def show_user_details(message: Message, user_contact: UserContactRead, sta
         "📋 *Ваші дані:* \n\n"
         f"👤 Ім'я: {user_contact.contact.first_name}\n"
         f"👤 Прізвище: {user_contact.contact.last_name}\n"
-        f"📍 Місто: {user_contact.contact.warehouse.description}\n"
+        f"📍 Місто: {user_contact.contact.warehouse.city.description}\n"
         f"🏢 Відділення Нової Пошти: {user_contact.contact.warehouse.description}\n"
         f"📞 Телефон: {user_contact.contact.phone_number}\n\n"
         "Додайте опис (необов'язково) або підтвердьте замовлення:"
@@ -46,16 +46,15 @@ async def confirm_order(callback: CallbackQuery, state: FSMContext):
     order_payload = {
         "accountId": data["account_id"],
         "description": description,
-        "user_id": data["user_id"]
+        "userContactId": data["user_id"]
     }
 
-    response = await create_order(order_payload)
-    if not response.status_code == 201:
-        await callback.answer("❌ Помилка при створенні замовлення. Спробуйте ще раз.")
+    order = await create_order(order_payload)
+    if not order:
+        await callback.message.answer("❌ Помилка при створенні замовлення. Спробуйте ще раз.")
         await state.clear()
         return
 
-    order = response.json()
     text = (
         f"🎉 Ваше замовлення створено!\n\n🆔 Номер замовлення: {order.id}\n📝 Опис: {order.description}\n\n"
         "Очікуйте підтвердження від адміністрації."

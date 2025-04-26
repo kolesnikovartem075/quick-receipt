@@ -17,12 +17,12 @@ public class UserSpecification implements Specification<User> {
 
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-        Join<User, Account> userJoin = root.join("account", JoinType.INNER);
+        Join<User, Account> accountJoin = root.join("account", JoinType.INNER);
 
         var predicates = SPredicates.builder()
                 .add(criteria.externalUserId(), externalUserId -> builder.equal(root.get("externalUserId"), externalUserId))
                 .add(criteria.role(), role -> builder.equal(root.get("role"), role))
-                .add(criteria.accountId(), accountId -> builder.equal(userJoin.get("accountId"), accountId))
+                .add(criteria.accountId(), accountId -> builder.equal(accountJoin.get("id"), accountId))
                 .build();
 
         return builder.and(predicates.toArray(new Predicate[0]));

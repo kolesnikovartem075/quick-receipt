@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-from app.client.APIClient import create_user_contact
+from app.client.APIClient import create_user_contact, fetch_user
 from app.keyboard.keyboard import confirm_nova_post_registration
 
 register_router = Router()
@@ -12,7 +12,6 @@ register_router = Router()
 
 class Register(StatesGroup):
     telegram_id = State()
-    user_id = State()
     first_name = State()
     last_name = State()
     number = State()
@@ -41,6 +40,7 @@ async def update_registration_message(message: Message, state: FSMContext):
         "📋 *Ваша інформація:* \n\n"
         f"👤 Ім'я: {data.get('first_name', '❌ Не вказано')}\n"
         f"👤 Призвище: {data.get('last_name', '❌ Не вказано')}\n"
+        f"📍 Місто: {data.get('city', '❌ Не вказано')}\n"
         f"🏢 Відділення Нової Пошти: {data.get('nova_post_address', '❌ Не вказано')}\n"
         f"📞 Телефон: {data.get('number', '❌ Не вказано')}\n\n"
     )
@@ -116,20 +116,19 @@ async def register_finish(message: Message, state: FSMContext):
             "lastName": data["last_name"],
             "phoneNumber": data["number"],
             "city": data["city"],
-            "postOffice": {
-                "findByString": data["nova_post_address"]
-            }
-        },
-        "externalUserId": str(data["telegram_id"])
+            "postOffice": data["nova_post_address"]
+        }
     }
 
-    response = await create_user_contact(data['user_id'], contact_data)
+    user = await fetch_user(data["telegram_id"])
+    response = await create_user_contact(user.id, contact_data)
 
     if response.status_code == 201:
         await message.answer(
             f"✅ *Реєстрація завершена!*\n\n"
             f"👤 Імʼя: {data['first_name']}\n"
             f"👤 Призвище: {data['last_name']}\n"
+            f"📍 Місто: {data['city']}\n"
             f"🏢 Відділення Нової Пошти: {data['nova_post_address']}\n"
             f"📞 Номер телефону: {data['number']}\n"
             "Дякуємо за реєстрацію!",

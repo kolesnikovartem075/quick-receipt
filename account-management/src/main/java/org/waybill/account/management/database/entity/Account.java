@@ -29,4 +29,7 @@ public class Account implements BaseEntity<Long> {
 
     @OneToMany(mappedBy = "account")
     private List<AccountContact> contactProfiles;
+
+    @OneToMany(mappedBy = "account")
+    private List<User> users;
 }

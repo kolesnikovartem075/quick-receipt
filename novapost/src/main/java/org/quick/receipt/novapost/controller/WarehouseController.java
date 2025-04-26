@@ -19,7 +19,7 @@ public class WarehouseController {
 
     private final WarehouseService warehouseService;
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WarehouseReadDto> findAll(GetWarehousesRequest warehousesRequest) {
         return warehouseService.findAll(warehousesRequest);
     }

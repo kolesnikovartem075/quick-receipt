@@ -3,21 +3,21 @@ from httpx import Response
 from typing import Optional
 
 from app.config import account_id as default_account_id
-from app.model.user_contact import UserRead, UserContactRead
+from app.model.user_contact import UserRead, UserContactRead, OrderRead
 
 ACCOUNT_MANAGEMENT_BASE_URL = "http://localhost:8080/api/v1"
-ORDER_BASE_URL = "http://localhost:8081/api/v2"
+ORDER_BASE_URL = "http://localhost:8081/api/v1"
 
 
 async def fetch_user(telegram_id: int) -> Optional[UserRead]:
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users",
-            params={"externalUserId": telegram_id}
+            params={"externalUserId": telegram_id, "page": 0, "size": 1}
         )
         response.raise_for_status()
 
-        content = await response.json().get("content", [])
+        content = response.json().get("content", [])
         return UserRead.model_validate(content[0]) if content else None
 
 
@@ -29,7 +29,7 @@ async def fetch_user_contact(user_id: int) -> Optional[UserContactRead]:
         )
         response.raise_for_status()
 
-        content = await response.json().get("content", [])
+        content = response.json().get("content", [])
         return UserContactRead.model_validate(content[0]) if content else None
 
 
@@ -43,7 +43,7 @@ async def create_user(user_data: dict) -> Response:
         return response
 
 
-async def create_user_contact(user_id, contact_data: dict = None) -> Response:
+async def create_user_contact(user_id, contact_data: dict) -> Response:
     async with httpx.AsyncClient() as client:
         response = await client.post(
             f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users/{user_id}/contacts",
@@ -52,7 +52,9 @@ async def create_user_contact(user_id, contact_data: dict = None) -> Response:
         return response
 
 
-async def create_order(order_data: dict) -> Response:
+async def create_order(order_data: dict) -> Optional[OrderRead]:
     async with httpx.AsyncClient() as client:
         response = await client.post(f"{ORDER_BASE_URL}/orders", json=order_data)
-        return response
+        response.raise_for_status()
+
+        return OrderRead.model_validate(response.json()) if response.status_code == 201 else None

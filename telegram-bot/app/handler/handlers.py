@@ -21,15 +21,15 @@ class Register(StatesGroup):
 
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext):
-    telegram_user_id = message.from_user.id
-    user = await fetch_user(telegram_user_id)
-    user_contact = await fetch_user_contact(user.id)
-    if user_contact:
+    user = await fetch_user(message.from_user.id)
+
+    if user and (user_contact := await fetch_user_contact(user.id)):
         await show_user_details(message, user_contact, state)
         return
 
-    user_data = {"externalUserId": telegram_user_id}
-    await create_user(user_data)
+    if not user:
+        await create_user({"externalUserId": message.from_user.id})
+
     await message.reply(f'Привіт {message.from_user.first_name},\n'
                         f'Для оформлення доставки треба натиснути кнопку нижче!',
                         reply_markup=keyboard.register)
