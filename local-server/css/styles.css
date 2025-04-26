@@ -1,0 +1,168 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 16px;
+    color: var(--tg-theme-text-color, #222);
+    background-color: var(--tg-theme-bg-color, #fff);
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--tg-theme-hint-color, #999);
+    font-size: 14px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--tg-theme-hint-color, #ddd);
+    border-radius: 8px;
+    background-color: var(--tg-theme-bg-color, #fff);
+    color: var(--tg-theme-text-color, #000);
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--tg-theme-button-color, #3390ec);
+}
+
+button {
+    background-color: var(--tg-theme-button-color, #3390ec);
+    color: var(--tg-theme-button-text-color, #fff);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.registration-summary {
+    background-color: var(--tg-theme-secondary-bg-color, #f4f4f5);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.registration-summary div {
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.registration-summary div span:first-child {
+    font-weight: 500;
+    min-width: 120px;
+    color: var(--tg-theme-hint-color, #999);
+}
+
+.registration-summary div span:last-child {
+    color: var(--tg-theme-text-color, #000);
+}
+
+.hidden {
+    display: none;
+}
+
+.error-message {
+    color: #DA291C;
+    font-size: 14px;
+    margin-top: 4px;
+    display: none;
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.progress-step {
+    flex: 1;
+    height: 4px;
+    background-color: var(--tg-theme-hint-color, #ddd);
+    margin: 0 2px;
+    border-radius: 2px;
+}
+
+.progress-step.active {
+    background-color: var(--tg-theme-button-color, #3390ec);
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.buttons button {
+    flex: 1;
+}
+
+.nav-buttons {
+    margin-top: 24px;
+}
+
+/* Стили для кнопки Новой Почты */
+.nova-poshta-button {
+    display: flex;
+    align-items: center;
+    background-color: var(--tg-theme-secondary-bg-color, #f4f4f5);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nova-poshta-button .logo {
+    margin-right: 12px;
+}
+
+.nova-poshta-button .angle {
+    margin-left: auto;
+}
+
+.nova-poshta-button .wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.nova-poshta-button .text {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.nova-poshta-button .text-description {
+    font-size: 14px;
+    color: var(--tg-theme-hint-color, #999);
+}
