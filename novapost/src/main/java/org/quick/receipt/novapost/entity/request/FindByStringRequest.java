@@ -8,4 +8,7 @@ public class FindByStringRequest {
 
     @JsonProperty("FindByString")
     private String findByString;
+
+    @JsonProperty("Ref")
+    private String ref;
 }

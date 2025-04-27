@@ -1,10 +1,10 @@
 package org.waybill.account.management.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.waybill.account.management.dto.nova.FindByStringRequest;
 import org.waybill.account.management.dto.nova.post.CityReadDto;
 
 import java.util.List;
@@ -14,4 +14,7 @@ public interface CityClient {
 
     @GetMapping(value = "/{queryString}", produces = MediaType.APPLICATION_JSON_VALUE)
     List<CityReadDto> find(@PathVariable String queryString);
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    List<CityReadDto> findAll(FindByStringRequest request);
 }

@@ -1,12 +1,13 @@
 import httpx
 from httpx import Response
-from typing import Optional
+from typing import Optional, List
 
 from app.config import account_id as default_account_id
-from app.model.user_contact import UserRead, UserContactRead, OrderRead
+from app.model.user_contact import UserRead, UserContactRead, OrderRead, CityRead, WarehouseRead
 
 ACCOUNT_MANAGEMENT_BASE_URL = "http://localhost:8080/api/v1"
 ORDER_BASE_URL = "http://localhost:8081/api/v1"
+NOVA_POSHTA_BASE_URL = "http://localhost:8090/api/v1"
 
 
 async def fetch_user(telegram_id: int) -> Optional[UserRead]:
@@ -58,3 +59,19 @@ async def create_order(order_data: dict) -> Optional[OrderRead]:
         response.raise_for_status()
 
         return OrderRead.model_validate(response.json()) if response.status_code == 201 else None
+
+
+async def fetch_cities(query_string: str) -> List[CityRead]:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{NOVA_POSHTA_BASE_URL}/cities/{query_string}")
+        response.raise_for_status()
+
+        return [CityRead.model_validate(city) for city in response.json()]
+
+
+async def fetch_warehouses(request_data: dict) -> List[WarehouseRead]:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{NOVA_POSHTA_BASE_URL}/warehouses", params=request_data)
+        response.raise_for_status()
+
+        return [WarehouseRead.model_validate(city) for city in response.json()]

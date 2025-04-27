@@ -32,4 +32,9 @@ public class CityService {
                 .map(cityReadMapper::map)
                 .toList();
     }
+    public List<CityReadDto> findAll(FindByStringRequest request) {
+        return novaPostService.getCities(request).stream()
+                .map(cityReadMapper::map)
+                .toList();
+    }
 }

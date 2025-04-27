@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"contactProfiles"})
-@EqualsAndHashCode(exclude = {"contactProfiles"})
+@ToString(exclude = {"contactProfiles", "users"})
+@EqualsAndHashCode(exclude = {"contactProfiles", "users"})
 @Entity
 @Table
 public class Account implements BaseEntity<Long> {

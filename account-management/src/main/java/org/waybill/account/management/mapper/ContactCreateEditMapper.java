@@ -1,6 +1,7 @@
 package org.waybill.account.management.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.waybill.account.management.database.entity.Account;
 import org.waybill.account.management.database.entity.Contact;
@@ -33,7 +34,7 @@ public class ContactCreateEditMapper implements Mapper<ContactCreateEditDto, Con
     }
 
     private void copy(ContactCreateEditDto object, Contact contact) {
-        var cityRef = cityService.getCityRef(object.getCity());
+        var cityRef = getCityRef(object);
         var account = getAccount(object);
         var warehouseReadDto = getWarehouseRef(cityRef, object);
 
@@ -46,6 +47,12 @@ public class ContactCreateEditMapper implements Mapper<ContactCreateEditDto, Con
         contact.setAccount(account);
     }
 
+    private String  getCityRef(ContactCreateEditDto object) {
+        return object.getCityRef() != null
+                ? object.getCityRef()
+                : cityService.getCityRef(object.getCity() + " ");
+    }
+
     private Account getAccount(ContactCreateEditDto object) {
         return accountRepository.findById(object.getAccountId())
                 .orElseThrow();
@@ -54,10 +61,20 @@ public class ContactCreateEditMapper implements Mapper<ContactCreateEditDto, Con
 
     private WarehouseReadDto getWarehouseRef(String cityRef, ContactCreateEditDto object) {
         var request = new WarehouseRequestDto();
+        if (StringUtils.isNotBlank(object.getWarehouseRef())) {
+            request.setRef(object.getWarehouseRef());
+        } else {
+            request.setFindByString(getFindByString(object));
+
+        }
 
         request.setCityRef(cityRef);
-        request.setFindByString(object.getPostOffice());
         return warehouseService.findBy(request)
                 .orElseThrow();
+    }
+
+    private String getFindByString(ContactCreateEditDto object) {
+        var numberOfThePostOffice = StringUtils.getDigits(object.getPostOffice());
+        return String.format("№%s ", numberOfThePostOffice);
     }
 }

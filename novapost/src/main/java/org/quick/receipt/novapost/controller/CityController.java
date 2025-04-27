@@ -2,6 +2,7 @@ package org.quick.receipt.novapost.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.quick.receipt.novapost.dto.CityReadDto;
+import org.quick.receipt.novapost.entity.request.FindByStringRequest;
 import org.quick.receipt.novapost.service.CityService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class CityController {
     @GetMapping(value = "/{queryString}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CityReadDto> find(@PathVariable String queryString) {
         return cityService.findByQueryString(queryString);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CityReadDto> findAll(FindByStringRequest request) {
+        return cityService.findAll(request);
     }
 }
