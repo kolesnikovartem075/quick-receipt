@@ -231,7 +231,7 @@ async def set_warehouse(message, state, warehouse):
 
     await message.answer(
         f"Ваше відділення: {warehouse.description}\n\nПідтвердити?",
-        reply_markup=confirm_nova_post_registration
+        reply_markup=inline_warehouses
     )
 
 
