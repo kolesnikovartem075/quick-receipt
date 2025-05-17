@@ -34,20 +34,20 @@ public class ContactCreateEditMapper implements Mapper<ContactCreateEditDto, Con
     }
 
     private void copy(ContactCreateEditDto object, Contact contact) {
-        var cityRef = getCityRef(object);
         var account = getAccount(object);
-        var warehouseReadDto = getWarehouseRef(cityRef, object);
+        var cityRef = getCityRef(object);
+        var warehouseRef = getWarehouseRef(cityRef, object);
 
         contact.setFirstName(object.getFirstName());
         contact.setLastName(object.getLastName());
         contact.setMiddleName(object.getMiddleName());
         contact.setPhoneNumber(object.getPhoneNumber());
-        contact.setPostOfficeRef(warehouseReadDto.getRef());
+        contact.setPostOfficeRef(warehouseRef);
         contact.setCityRef(cityRef);
         contact.setAccount(account);
     }
 
-    private String  getCityRef(ContactCreateEditDto object) {
+    private String getCityRef(ContactCreateEditDto object) {
         return object.getCityRef() != null
                 ? object.getCityRef()
                 : cityService.getCityRef(object.getCity() + " ");
@@ -59,17 +59,17 @@ public class ContactCreateEditMapper implements Mapper<ContactCreateEditDto, Con
     }
 
 
-    private WarehouseReadDto getWarehouseRef(String cityRef, ContactCreateEditDto object) {
-        var request = new WarehouseRequestDto();
+    private String getWarehouseRef(String cityRef, ContactCreateEditDto object) {
         if (StringUtils.isNotBlank(object.getWarehouseRef())) {
-            request.setRef(object.getWarehouseRef());
-        } else {
-            request.setFindByString(getFindByString(object));
-
+            return object.getWarehouseRef();
         }
 
+        var request = new WarehouseRequestDto();
+        request.setFindByString(getFindByString(object));
         request.setCityRef(cityRef);
+
         return warehouseService.findBy(request)
+                .map(WarehouseReadDto::getRef)
                 .orElseThrow();
     }
 

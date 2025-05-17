@@ -1,74 +1,120 @@
-from aiogram import F, Router
+from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
-from app.dto.Admin import Admin
-from app.keyboard.dashboard_keyboard import admin_main_menu, dashboard_menu
+from app.client.APIClient import fetch_account, fetch_user
+from app.keyboard import dashboard_keyboard
 
-# Create dashboard router
+# Create admin router
 dashboard_router = Router()
 
 
+class AdminStates(StatesGroup):
+    """States for admin actions"""
+    start = State()
+    account_contact_entry = State()
+
+
+# User identification and main menu
 @dashboard_router.message(CommandStart())
 async def admin_start(message: Message, state: FSMContext):
-    """Handle admin start command"""
-    await message.reply(f'Вітаємо в адмін-панелі, {message.from_user.first_name}!',
-                        reply_markup=admin_main_menu)
+    """Admin bot entry point - identify user and show main menu"""
+    admin_user = await fetch_user(message.from_user.id)
+    account_data = await fetch_account(admin_user.account_id)
 
+    if not admin_user or not account_data:
+        await message.answer("❌ Помилка: Не вдалося отримати дані користувача або аккаунту.")
+        return
 
-@dashboard_router.callback_query(F.data == "admin_dashboard")
-async def admin_dashboard(callback: CallbackQuery):
-    """Show admin dashboard with statistics"""
-    stats = {
-        'total_users': 120,
-        'total_orders': 45,
-        'pending_orders': 12,
-        'completed_orders': 30,
-        'new_today': 5
-    }
-
-    text = (
-        "📊 *Панель адміністратора* \n\n"
-        f"👥 Всього користувачів: {stats['total_users']}\n"
-        f"📦 Всього замовлень: {stats['total_orders']}\n"
-        f"⏳ Очікують обробки: {stats['pending_orders']}\n"
-        f"✅ Виконано: {stats['completed_orders']}\n"
-        f"🆕 Нових сьогодні: {stats['new_today']}\n"
+    await state.update_data(
+        user_id=admin_user.id,
+        account_id=account_data.id,
     )
 
-    await callback.message.edit_text(text, reply_markup=dashboard_menu, parse_mode="Markdown")
-    await callback.answer()
-
-
-@dashboard_router.callback_query(F.data == "stats_day")
-async def stats_day(callback: CallbackQuery):
-    """Show daily statistics"""
-    # Fetch daily statistics
-    # daily_stats = await get_daily_stats()
-
-    # Mock data for development
-    daily_stats = {
-        'orders': 15,
-        'revenue': 12500,
-        'new_users': 8,
-    }
-
-    text = (
-        "📅 *Статистика за сьогодні* \n\n"
-        f"📦 Нових замовлень: {daily_stats['orders']}\n"
-        f"💰 Дохід: {daily_stats['revenue']} грн\n"
-        f"👤 Нових користувачів: {daily_stats['new_users']}\n"
+    # Welcome admin with main menu
+    await message.answer(
+        f"👋 Ласкаво просимо до Адмін-бота, {message.from_user.first_name}!\n\n"
+        f"📊 Аккаунт: {account_data.name} ({account_data.nickname})\n"
+        f"🔑 Ваша роль: {admin_user.role}\n"
+        f"Будь ласка, оберіть опцію з меню нижче:",
+        reply_markup=dashboard_keyboard.main_menu
     )
 
-    await callback.message.edit_text(text, reply_markup=dashboard_menu, parse_mode="Markdown")
+    await state.set_state(AdminStates.start)
+
+
+# Main menu handlers - just the basic navigation
+@dashboard_router.callback_query(F.data == "manage_account_contacts")
+async def manage_account_contacts(callback: CallbackQuery, state: FSMContext):
+    """Entry point for account contact management"""
     await callback.answer()
+
+    await callback.message.edit_text(
+        f"📇 Управління контактами аккаунта\n\n"
+        f"Звідси ви можете додавати нові контакти з API-ключем або редагувати існуючі.\n\n"
+        f"Будь ласка, оберіть опцію:",
+        reply_markup=dashboard_keyboard.account_contact_menu
+    )
+
+
+@dashboard_router.callback_query(F.data == "manage_orders")
+async def manage_orders(callback: CallbackQuery):
+    """Entry point for order management"""
+    await callback.answer()
+
+    await callback.message.edit_text(
+        "📦 Управління замовленнями\n\n"
+        "Тут ви можете переглядати та керувати замовленнями, приймати запити та створювати накладні.\n\n"
+        "Будь ласка, оберіть опцію:",
+        reply_markup=dashboard_keyboard.order_menu
+    )
+
+
+@dashboard_router.callback_query(F.data == "manage_users")
+async def manage_users(callback: CallbackQuery):
+    """Entry point for user management"""
+    await callback.answer()
+
+    await callback.message.edit_text(
+        "👥 Управління користувачами\n\n"
+        "Тут ви можете створювати нових користувачів та керувати існуючими контактами користувачів.\n\n"
+        "Будь ласка, оберіть опцію:",
+        reply_markup=dashboard_keyboard.user_menu
+    )
 
 
 @dashboard_router.callback_query(F.data == "back_to_main")
-async def back_to_main_menu(callback: CallbackQuery):
-    """Return to main admin menu"""
-    text = "Головне меню адміністратора:"
-
-    await callback.message.edit_text(text, reply_markup=admin_main_menu)
+async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
+    """Return to main menu"""
     await callback.answer()
+
+    # Get stored user and account info
+    data = await state.get_data()
+
+    await callback.message.edit_text(
+        f"📊 Панель адміністратора\n\n"
+        f"Аккаунт: {data.get('account_name')} ({data.get('account_nickname')})\n"
+        f"Будь ласка, оберіть опцію з меню нижче:",
+        reply_markup=dashboard_keyboard.main_menu
+    )
+
+    await state.set_state(AdminStates.start)
+
+
+# Entry point for account contact creation - just a placeholder
+@dashboard_router.callback_query(F.data == "add_account_contact")
+async def add_account_contact(callback: CallbackQuery, state: FSMContext):
+    """Entry point for creating a new account contact with API key"""
+    await callback.answer()
+
+    await callback.message.edit_text(
+        "➕ Додати новий контакт аккаунта\n\n"
+        "Давайте створимо новий контакт аккаунта з API-ключем.\n"
+        "Цей функціонал буде реалізовано на наступному кроці.",
+        reply_markup=dashboard_keyboard.back_to_account_contacts
+    )
+
+    # Set state for account contact creation
+    await state.set_state(AdminStates.account_contact_entry)

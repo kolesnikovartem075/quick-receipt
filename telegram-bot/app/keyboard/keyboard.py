@@ -26,6 +26,15 @@ settings = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Change name', callback_data='change_name')],
 ])
 
+edit_contact = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="✏️ Імʼя", callback_data="edit_first_name")],
+    [InlineKeyboardButton(text="✏️ Прізвище", callback_data="edit_last_name")],
+    [InlineKeyboardButton(text="✏️ Телефон", callback_data="edit_phone")],
+    [InlineKeyboardButton(text="✏️ Місто", callback_data="edit_city")],
+    [InlineKeyboardButton(text="✏️ Відділення", callback_data="edit_warehouse")],
+    [InlineKeyboardButton(text="✅ Зберегти зміни", callback_data="save_contact_changes")],
+    [InlineKeyboardButton(text="🔙 Назад", callback_data="back_to_order")]
+])
 
 # Dynamic keyboard functions
 def inline_cities(cities):
@@ -51,6 +60,7 @@ def inline_warehouses(warehouses):
 
 
 cars = ['Tesla', 'BMW', 'Audi', 'Toyota', 'Lada', 'Kia']
+
 
 async def inline_cars():
     """Build a dynamic keyboard with car options"""

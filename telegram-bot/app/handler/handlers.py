@@ -28,7 +28,7 @@ async def start(message: Message, state: FSMContext):
         return
 
     if not user:
-        await create_user({"externalUserId": message.from_user.id})
+        await create_user(message.from_user.id)
 
     await message.reply(f'Привіт {message.from_user.first_name},\n'
                         f'Для оформлення доставки треба натиснути кнопку нижче!',

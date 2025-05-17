@@ -5,9 +5,11 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_user_contact, fetch_user, fetch_cities, fetch_warehouses
+from app.config import account_id
 from app.keyboard.keyboard import (
     inline_cities,
-    inline_warehouses
+    inline_warehouses,
+    confirm_nova_post_registration
 )
 
 register_router = Router()
@@ -175,7 +177,6 @@ async def complete_registration(message: Message, state: FSMContext):
     """Create user contact and complete registration process"""
     data = await state.get_data()
 
-
     user = await fetch_user(data["telegram_id"])
 
     contact_data = await create_contact_payload(data)
@@ -200,6 +201,7 @@ async def complete_registration(message: Message, state: FSMContext):
 
 async def create_contact_payload(data):
     contact_data = {
+        "accountId": account_id,
         "contactCreateEditDto": {
             "firstName": data["first_name"],
             "lastName": data["last_name"],
@@ -231,7 +233,7 @@ async def set_warehouse(message, state, warehouse):
 
     await message.answer(
         f"Ваше відділення: {warehouse.description}\n\nПідтвердити?",
-        reply_markup=inline_warehouses
+        reply_markup=confirm_nova_post_registration
     )
 
 

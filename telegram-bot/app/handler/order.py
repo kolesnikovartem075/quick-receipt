@@ -5,7 +5,7 @@ from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import create_order
 from app.keyboard.keyboard import order_confirmation
-from app.model.user_contact import UserContactRead
+from app.models import UserContactRead
 
 order_router = Router()
 

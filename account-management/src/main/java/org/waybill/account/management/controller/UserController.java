@@ -17,7 +17,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
-@RequestMapping("/api/v1/accounts/{accountId}/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -30,24 +30,21 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserReadDto findById(@PathVariable Long id,
-                                @PathVariable Long accountId) {
+    public UserReadDto findById(@PathVariable Long id) {
         return userService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDto create(@RequestBody UserCreateEditDto user,
-                              @PathVariable Long accountId) {
-        return userService.create(new UserCreateEditDto(user.getExternalUserId(), accountId, user.getRole()));
+    public UserReadDto create(@RequestBody UserCreateEditDto user) {
+        return userService.create(user);
     }
 
     @PutMapping("/{id}")
     public UserReadDto update(@PathVariable Long id,
-                              @RequestBody UserCreateEditDto user,
-                              @PathVariable Long accountId) {
-        return userService.update(id, new UserCreateEditDto(user.getExternalUserId(), accountId, user.getRole()))
+                              @RequestBody UserCreateEditDto user) {
+        return userService.update(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

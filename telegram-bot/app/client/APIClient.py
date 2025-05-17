@@ -3,7 +3,7 @@ from httpx import Response
 from typing import Optional, List
 
 from app.config import account_id as default_account_id
-from app.model.user_contact import UserRead, UserContactRead, OrderRead, CityRead, WarehouseRead
+from app.models import UserRead, UserContactRead, OrderRead, CityRead, WarehouseRead
 
 ACCOUNT_MANAGEMENT_BASE_URL = "http://localhost:8080/api/v1"
 ORDER_BASE_URL = "http://localhost:8081/api/v1"
@@ -13,8 +13,8 @@ NOVA_POSHTA_BASE_URL = "http://localhost:8090/api/v1"
 async def fetch_user(telegram_id: int) -> Optional[UserRead]:
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users",
-            params={"externalUserId": telegram_id, "page": 0, "size": 1}
+            f"{ACCOUNT_MANAGEMENT_BASE_URL}/users",
+            params={"externalUserId": telegram_id, "accountId": default_account_id, "page": 0, "size": 1}
         )
         response.raise_for_status()
 
@@ -25,7 +25,7 @@ async def fetch_user(telegram_id: int) -> Optional[UserRead]:
 async def fetch_user_contact(user_id: int) -> Optional[UserContactRead]:
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users/{user_id}/contacts",
+            f"{ACCOUNT_MANAGEMENT_BASE_URL}/users/{user_id}/contacts",
             params={"page": 0, "size": 1}
         )
         response.raise_for_status()
@@ -34,11 +34,11 @@ async def fetch_user_contact(user_id: int) -> Optional[UserContactRead]:
         return UserContactRead.model_validate(content[0]) if content else None
 
 
-async def create_user(user_data: dict) -> Response:
+async def create_user(external_user_id: int) -> Response:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users",
-            json=user_data
+            f"{ACCOUNT_MANAGEMENT_BASE_URL}/users",
+            json={"externalUserId": external_user_id, "accountId": default_account_id}
         )
         response.raise_for_status()
         return response
@@ -47,10 +47,19 @@ async def create_user(user_data: dict) -> Response:
 async def create_user_contact(user_id, contact_data: dict) -> Response:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"{ACCOUNT_MANAGEMENT_BASE_URL}/accounts/{default_account_id}/users/{user_id}/contacts",
+            f"{ACCOUNT_MANAGEMENT_BASE_URL}/users/{user_id}/contacts",
             json=contact_data
         )
         return response
+
+
+async def update_user_contact(user_id: int, contact_id: int, contact_data: dict) -> Optional[UserContactRead]:
+    async with httpx.AsyncClient() as client:
+        response = await client.put(
+            f"{ACCOUNT_MANAGEMENT_BASE_URL}/users/{user_id}/contacts/{contact_id}",
+            json=contact_data
+        )
+        return UserContactRead.model_validate(response.json()) if response.status_code == 200 else None
 
 
 async def create_order(order_data: dict) -> Optional[OrderRead]:
