@@ -13,8 +13,8 @@ dashboard_router = Router()
 
 class AdminStates(StatesGroup):
     """States for admin actions"""
-    start = State()
-    account_contact_entry = State()
+    account_id = State()
+    user_id = State()
 
 
 # User identification and main menu
@@ -30,7 +30,7 @@ async def admin_start(message: Message, state: FSMContext):
 
     await state.update_data(
         user_id=admin_user.id,
-        account_id=account_data.id,
+        account_id=account_data.id
     )
 
     # Welcome admin with main menu
@@ -41,8 +41,6 @@ async def admin_start(message: Message, state: FSMContext):
         f"Будь ласка, оберіть опцію з меню нижче:",
         reply_markup=dashboard_keyboard.main_menu
     )
-
-    await state.set_state(AdminStates.start)
 
 
 # Main menu handlers - just the basic navigation
@@ -100,21 +98,18 @@ async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
         reply_markup=dashboard_keyboard.main_menu
     )
 
-    await state.set_state(AdminStates.start)
-
-
 # Entry point for account contact creation - just a placeholder
-@dashboard_router.callback_query(F.data == "add_account_contact")
-async def add_account_contact(callback: CallbackQuery, state: FSMContext):
-    """Entry point for creating a new account contact with API key"""
-    await callback.answer()
-
-    await callback.message.edit_text(
-        "➕ Додати новий контакт аккаунта\n\n"
-        "Давайте створимо новий контакт аккаунта з API-ключем.\n"
-        "Цей функціонал буде реалізовано на наступному кроці.",
-        reply_markup=dashboard_keyboard.back_to_account_contacts
-    )
-
-    # Set state for account contact creation
-    await state.set_state(AdminStates.account_contact_entry)
+# @dashboard_router.callback_query(F.data == "add_account_contact")
+# async def add_account_contact(callback: CallbackQuery, state: FSMContext):
+#     """Entry point for creating a new account contact with API key"""
+#     await callback.answer()
+#
+#     await callback.message.edit_text(
+#         "➕ Додати новий контакт аккаунта\n\n"
+#         "Давайте створимо новий контакт аккаунта з API-ключем.\n"
+#         "Цей функціонал буде реалізовано на наступному кроці.",
+#         reply_markup=dashboard_keyboard.back_to_account_contacts
+#     )
+#
+#     # Set state for account contact creation
+#     await state.set_state(AdminStates.account_contact_entry)
