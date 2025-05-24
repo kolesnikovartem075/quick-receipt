@@ -4,9 +4,9 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 
 from app.client.APIClient import fetch_cities, fetch_warehouses, create_account_contact
-from app.keyboard import dashboard_keyboard
+from app.keyboard import dashboard_keyboard, account_contact_create_keyboard
 from app.keyboard.account_contact_create_keyboard import inline_cities, inline_warehouses
-from app.widdleware import require_account_id
+from app.middleware import require_account_id
 
 create_contact_router = Router()
 
@@ -302,7 +302,7 @@ async def set_warehouse(message, state, warehouse):
     await message.answer(
         summary,
         parse_mode="Markdown",
-        reply_markup=dashboard_keyboard.confirm_action
+        reply_markup=account_contact_create_keyboard.confirm_action
     )
 
 

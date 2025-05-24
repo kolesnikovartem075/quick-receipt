@@ -1,4 +1,4 @@
-package org.quick.receipt.novapost.dto;
+package org.waybill.user.dto;
 
 import lombok.Builder;
 import lombok.Data;

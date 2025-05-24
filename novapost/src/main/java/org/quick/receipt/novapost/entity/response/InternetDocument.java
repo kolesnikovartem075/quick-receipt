@@ -12,10 +12,10 @@ public class InternetDocument {
     private String ref;
 
     @JsonProperty("CostOnSite")
-    private Integer costOnSite;
+    private String costOnSite;
 
     @JsonProperty("EstimatedDeliveryDate")
-    private LocalDate estimatedDeliveryDate;
+    private String estimatedDeliveryDate;
 
     @JsonProperty("IntDocNumber")
     private String intDocNumber;

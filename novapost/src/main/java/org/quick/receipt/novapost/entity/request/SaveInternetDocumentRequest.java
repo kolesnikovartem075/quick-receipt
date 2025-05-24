@@ -1,9 +1,11 @@
 package org.quick.receipt.novapost.entity.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class SaveInternetDocumentRequest {
 
     @JsonProperty("PayerType")
@@ -25,13 +27,13 @@ public class SaveInternetDocumentRequest {
     private String serviceType;
 
     @JsonProperty("SeatsAmount")
-    private Integer seatsAmount;
+    private String seatsAmount;
 
     @JsonProperty("Description")
     private String description;
 
     @JsonProperty("Cost")
-    private Float cost;
+    private String cost;
 
     @JsonProperty("CitySender")
     private String citySender;

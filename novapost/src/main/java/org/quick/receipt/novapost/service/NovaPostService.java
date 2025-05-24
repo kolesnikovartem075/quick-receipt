@@ -35,7 +35,7 @@ public class NovaPostService {
                 .orElseThrow();
     }
 
-    public List<CounterpartySender> getCounterparties(GetCounterpartiesRequest request) {
+    public List<CounterpartySender> getCounterparties(String apiKey, GetCounterpartiesRequest request) {
         RequestBase<GetCounterpartiesRequest> requestBase = RequestBase.<GetCounterpartiesRequest>builder()
                 .apiKey(apiKey)
                 .modelName("Counterparty")
@@ -87,7 +87,7 @@ public class NovaPostService {
                 .orElseThrow();
     }
 
-    public List<CounterpartyContact> getCounterpartyContactPersons(GetCounterpartyContactPersonsRequest request) {
+    public List<CounterpartyContact> getCounterpartyContactPersons(String apiKey, GetCounterpartyContactPersonsRequest request) {
         RequestBase<GetCounterpartyContactPersonsRequest> requestBase = RequestBase.<GetCounterpartyContactPersonsRequest>builder()
                 .apiKey(apiKey)
                 .modelName("Counterparty")
@@ -100,7 +100,7 @@ public class NovaPostService {
                 .orElseThrow();
     }
 
-    public List<CounterpartyContact> saveCounterpartyContactPerson(SaveCounterpartyRequest request) {
+    public List<CounterpartyContact> saveCounterpartyContactPerson(String apiKey, SaveCounterpartyRequest request) {
         RequestBase<SaveCounterpartyRequest> requestBase = RequestBase.<SaveCounterpartyRequest>builder()
                 .apiKey(apiKey)
                 .modelName("CounterpartyGeneral")

@@ -7,7 +7,7 @@ from aiogram.types import CallbackQuery
 from app.client.APIClient import fetch_account_contacts
 from app.keyboard.contact_list_keyboard import empty_contacts_keyboard, contacts_keyboard, error_keyboard
 from app.models import AccountContactRead
-from app.widdleware import require_account_id
+from app.middleware import require_account_id
 
 account_contacts_router = Router()
 

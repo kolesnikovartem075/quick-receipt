@@ -12,10 +12,15 @@ public class GetCounterpartiesRequest {
     @JsonProperty("CounterpartyProperty")
     private String counterpartyProperty;
 
-//    @JsonProperty("GetPrivatePerson")
-//    private String getPrivatePerson;
+    @JsonProperty("GetPrivatePerson")
+    private String getPrivatePerson;
+
 
     public static GetCounterpartiesRequest of(CounterpartyType counterpartyType) {
-        return new GetCounterpartiesRequest(counterpartyType.getName());
+        if (counterpartyType.equals(CounterpartyType.SENDER)) {
+            return new GetCounterpartiesRequest(counterpartyType.getName(), "1");
+        }
+
+        return new GetCounterpartiesRequest(counterpartyType.getName(), null);
     }
 }

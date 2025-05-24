@@ -2,7 +2,6 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 def inline_cities(cities):
-    """Generate keyboard for city selection"""
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
             text=city.description,
@@ -13,7 +12,6 @@ def inline_cities(cities):
 
 
 def inline_warehouses(warehouses):
-    """Generate keyboard for warehouse selection"""
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
             text=f"{i + 1}. {warehouse.description[:30]}",

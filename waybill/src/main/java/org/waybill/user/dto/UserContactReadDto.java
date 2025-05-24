@@ -1,20 +1,18 @@
-package org.quick.receipt.novapost.dto;
+package org.waybill.user.dto;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
 @Value
 @Builder
-public class AccountContactReadDto extends CounterpartyContactDto {
+public class UserContactReadDto {
 
     Long id;
+    UserReadDto user;
     ContactReadDto contact;
-    String apiKey;
+
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
-
 }

@@ -21,10 +21,10 @@ public class NovaPostController {
         return novaPostService.getCities(request);
     }
 
-    @PostMapping("/counterparties")
-    public List<CounterpartySender> getCounterparties(@RequestBody GetCounterpartiesRequest request) {
-        return novaPostService.getCounterparties(request);
-    }
+//    @PostMapping("/counterparties")
+//    public List<CounterpartySender> getCounterparties(@RequestBody GetCounterpartiesRequest request) {
+//        return novaPostService.getCounterparties(request);
+//    }
 
     @PostMapping("/cargo-descriptions")
     public List<CargoDescription> getCargoDescriptions(@RequestBody FindByStringRequest request) {
@@ -43,15 +43,15 @@ public class NovaPostController {
         return warehouses;
     }
 
-    @PostMapping("/counterparty-contact-persons")
-    public List<CounterpartyContact> getCounterpartyContactPersons(@RequestBody GetCounterpartyContactPersonsRequest request) {
-        return novaPostService.getCounterpartyContactPersons(request);
-    }
-
-    @PostMapping("/save-counterparty-contact-person")
-    public List<CounterpartyContact> saveCounterpartyContactPerson(@RequestBody SaveCounterpartyRequest request) {
-        return novaPostService.saveCounterpartyContactPerson(request);
-    }
+//    @PostMapping("/counterparty-contact-persons")
+//    public List<CounterpartyContact> getCounterpartyContactPersons(@RequestBody GetCounterpartyContactPersonsRequest request) {
+//        return novaPostService.getCounterpartyContactPersons(request);
+//    }
+//
+//    @PostMapping("/save-counterparty-contact-person")
+//    public List<CounterpartyContact> saveCounterpartyContactPerson(@RequestBody SaveCounterpartyRequest request) {
+//        return novaPostService.saveCounterpartyContactPerson(request);
+//    }
 
     @PostMapping("/save-address-contact-person")
     public List<ContactPersonAddress> saveAddressContactPerson(@RequestBody SaveAddressContactPersonRequest request) {
