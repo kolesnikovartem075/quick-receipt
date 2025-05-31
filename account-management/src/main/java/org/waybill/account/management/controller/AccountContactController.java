@@ -25,6 +25,13 @@ public class AccountContactController {
 
     private final AccountContactService accountContactService;
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AccountContactReadDto findById(@PathVariable Long id,
+                                          @PathVariable Long accountId) {
+        return accountContactService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<AccountContactReadDto> findAll(@PathVariable Long accountId,
                                                AccountContactFilter filter,

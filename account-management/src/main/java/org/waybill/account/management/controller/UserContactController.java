@@ -25,6 +25,15 @@ public class UserContactController {
 
     private final UserContactService userContactService;
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserContactReadDto findById(@PathVariable Long id,
+                                       @PathVariable Long accountId,
+                                       @PathVariable String userId) {
+        return userContactService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<UserContactReadDto> findAll(UserContactFilter filter, Pageable pageable,
                                             @PathVariable Long userId,
